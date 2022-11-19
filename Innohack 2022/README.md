@@ -134,13 +134,20 @@ Option #4 involves developers interfacing with Gitlab to manage their Terraform 
 - https://docs.gitlab.com/ee/user/project/integrations/webhooks.html
 - https://docs.gitlab.com/ee/user/infrastructure/iac/
 
-## 3. VRA Design
+## 3. **VRA Design**
 ---
+A characteristic feature of declarative programming languages is that they always describe the desired end result rather than outlining all the intermediate work steps. In declarative programming, the solution path to reach the goal is determined automatically. This works well, provided the specifications of the final state are clearly defined and an appropriate implementation procedure exists. If both of these conditions are met, declarative programming is very efficient.
 
-
-To make VRA services immutable
-- Set Day 2 Action Policies to Terraform-compatible cloud templates to prevent modification of resources. If you require any updates on the resources, please request for your resources through GUI
+Essentially, this means 2 factors: 
 - 
+
+### **3.1. To enforce Immutability of Cloud A/B Resources**
+
+Set Day 2 Action Policies to Terraform-compatible cloud templates to prevent modification of resources. If you require any updates on the resources, please request for your resources through GUI
+
+### **3.2. To enforce Idempotency of Cloud A/B Resources**
+
+Set Day 2 Action Policies to Terraform-compatible cloud templates to prevent modification of resources. If you require any updates on the resources, please request for your resources through GUI
 
 
 ## 4. Enabling CI/CD of Infrastructure Code
