@@ -121,17 +121,18 @@ Option #3 is a hybrid approach of Option #1 and #2. It combines the pros and con
 ### **2.4. Option 4 (UNEXPLORED): Gitlab to Interface with VRA**
     Gitlab --> VRA --> Cloud A/B Resources
 
-Option #4 involves developers interfacing with Gitlab to manage their Terraform configurations. 
+Option #4 involves developers interfacing with Gitlab to manage their Terraform configurations. Once developers push their configurations onto Gitlab, it triggers a CI/CD pipeline to create a Gitlab Runner (with Terraform Runtime) that provisions the necessary resources. Gitlab will store the Terraform state for Cloud A/B Resources. 
 
-#### **Pros**
-- Developers do not need to create a jumphost server in SDC manually
+#### **Pros** 
+- Developers do not need to create a jumphost server in SDC manually. Terraform State management is outsourced to Gitlab. 
+- CI/CD pipeline for Terraform can be integrated with developers' existing application CI/CD pipeines 
 
 #### **Cons**
-- Some of our catalog items are not IaC Compatible (e.g. Firewall as a Service). Will need to refactor the catalog items to achieve idempotency 
-- only vra_deployment resource in VRA Terraform Provider is relevant, and is very limited in functionality (Day 2 custom actions like update deployment / add disk cannot be done through Terraform) 
-- [Need to review] Day 2 Action policies to be set for Terraform Content Source to ensure resources are immutable 
-- Developers still need to spin up a jumphost server manaually to initialize their Terraform runtime (it's current practices now)
+- Further exploration is required for this approach. Possibly can push it to Phase 2 of project.
 
+#### **References**
+- https://docs.gitlab.com/ee/user/project/integrations/webhooks.html
+- https://docs.gitlab.com/ee/user/infrastructure/iac/
 
 ## 3. VRA Design
 ---
