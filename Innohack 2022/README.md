@@ -87,10 +87,13 @@ We will create a public repository (E.g. Terraform) within our self-hosted Gitla
 
 Developers are free to fork the repository and configure their own custom Terraform Configuration templates to state how much resources they need. 
 
+A separate Content Source (for Cloud Templates and VRO Workflows) will be tailor-made just for Terraform compatibility.
+> Note: To simpliy the declaration of infrastructure, 1 Deployment will be tied to 1 resource (VM, SG, FW Rule). These deployments will then be managed via developers' Terraform Configurations. 
+
 The general developer process flow will be as follows: 
 1. Developers spinning up a Jumphost Server (JH) in Cloud A/B
 2. Git clone the Terraform Repository into JH and/or pull their custom Terraform configurations from their own repositories
-3. Run shellscript to get developer's VRA refresh token --> update it in their Terraform Variables file
+3. Initialize Terraform Working Directory & get developer's VRA refresh token --> update it in their Terraform Variables file
 4. Terraform init --> Terraform plan --> Terraform Apply
 
 #### **Pros**
@@ -99,44 +102,36 @@ The general developer process flow will be as follows:
 
 #### **Cons**
 - Some of our catalog items are not IaC Compatible (e.g. Firewall as a Service). Will need to refactor the catalog items to achieve idempotency 
-- only vra_deployment resource in VRA Terraform Provider is relevant, and is very limited in functionality (Day 2 custom actions like update deployment / add disk cannot be done through Terraform)
-- Day 2 Action policies to be set for 
+- only vra_deployment resource in VRA Terraform Provider is relevant, and is very limited in functionality (Day 2 custom actions like update deployment / add disk cannot be done through Terraform) 
+- [Need to review] Day 2 Action policies to be set for Terraform Content Source to ensure resources are immutable 
+- Developers still need to spin up a jumphost server manaually to initialize their Terraform runtime (it's current practices now)
 
 #### **References**
 - https://registry.terraform.io/providers/vmware/vra/latest/docs
 - https://blogs.vmware.com/management/2020/01/getting-started-with-vra-terraform-provider.html
 
-### 2.3. Option 3: Hybrid Approach
+### **2.3. Option 3: Hybrid Approach**
     Terraform [External] --> VRA + Terraform --> Cloud A/B Resources
 
-Option #2 involves Developers spinning up a Jumphost Server in Cloud A/B. 
+Option #3 is a hybrid approach of Option #1 and #2. It combines the pros and cons of both options, but essentially this provides a more comprehensive approach to enable CI/CD of Infrastructure Code for Cloud A/B Resources. 
+- NSX-T related Cloud Templates backed by Terraform Configurations
+- VM related Cloud Templates declared via external Terraform runtime
 
 
-
-    - We will create a public repo in Gitlab to store the following:
-      - Terraform CLI 
-      - Terraform Providers (VMWare vRealize Automation Provider)
-      - Sample Terraform Configuration Templates
-      - [From Developers' Repo] Their custom Terraform Configuration files
-    - Spin up a Jumphost in Cloud A/B --> pull Terraform binaries and configurations from Gitlab to Jumphost
-    - Initialize Terraform Working Directory in JH
-
-### 2.4. Option 4 (UNEXPLORED): Gitlab to Interface with VRA
+### **2.4. Option 4 (UNEXPLORED): Gitlab to Interface with VRA**
     Gitlab --> VRA --> Cloud A/B Resources
 
-Option #2 involves Developers spinning up a Jumphost Server in Cloud A/B. 
+Option #4 involves developers interfacing with Gitlab to manage their Terraform configurations. 
 
+#### **Pros**
+- Developers do not need to create a jumphost server in SDC manually
 
+#### **Cons**
+- Some of our catalog items are not IaC Compatible (e.g. Firewall as a Service). Will need to refactor the catalog items to achieve idempotency 
+- only vra_deployment resource in VRA Terraform Provider is relevant, and is very limited in functionality (Day 2 custom actions like update deployment / add disk cannot be done through Terraform) 
+- [Need to review] Day 2 Action policies to be set for Terraform Content Source to ensure resources are immutable 
+- Developers still need to spin up a jumphost server manaually to initialize their Terraform runtime (it's current practices now)
 
-    - We will create a public repo in Gitlab to store the following:
-      - Terraform CLI 
-      - Terraform Providers (VMWare vRealize Automation Provider)
-      - Sample Terraform Configuration Templates
-      - [From Developers' Repo] Their custom Terraform Configuration files
-    - Spin up a Jumphost in Cloud A/B --> pull Terraform binaries and configurations from Gitlab to Jumphost
-    - Initialize Terraform Working Directory in JH
-
-> A safe option wil be Option #2
 
 ## 3. VRA Design
 ---
