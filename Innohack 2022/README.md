@@ -1,17 +1,17 @@
-# **Innohack Project 2022 - Enabling IaC in SDC**
+# **Innohack Project 2022 - Enabling IaC in Cloud A/B**
 
 ## **1. Objectives and Design Considerations**
 ---
 ### **1.1. Background**
-Currently, developers are only able to provision their resources through our SDC landing page (GUI). 
+Currently, developers are only able to provision their resources through our Cloud A/B landing page (GUI). 
 
 When users request for resources (e.g. VMs, Firewalls) from the Service Catalog in VRA, they are created in the form of Deployments. With that, developers can track their deployed resources, and manage these deployed resources using actions. 
 
-However, this implies that developers have to manually request for their own resources through our SDC landing page, and this creates multiple deployments in the process. Developers will also have to manage their own Day-2 actions for each of their deployments.
+However, this implies that developers have to manually request for their own resources through our Cloud A/B landing page, and this creates multiple deployments in the process. Developers will also have to manage their own Day-2 actions for each of their deployments.
 
-    E.g. if a Developer wants to create a Cluster of VMs on SDC, and they want to test in Cloud B first:
+    E.g. if a Developer wants to create a Cluster of VMs on Cloud A/B, and they want to test in Cloud B first:
 
-    He/she will request for the following resources from SDC Landing Page: 
+    He/she will request for the following resources from Cloud A/B Landing Page: 
       1. 2x Windows 2019 VMs 
         - Will require 2 VMs to form my Application Cluster
       2. Security Group (SG) - Create
@@ -21,41 +21,42 @@ However, this implies that developers have to manually request for their own res
       4. FW - Create
         - To allow incoming connectivity between external VMs to my SG
     
-    This creates a total of 4 deployments within their VRA Project in Cloud B only. They will have to replicate this process in Cloud A as well. 
+    This creates a total of 4 deployments within their VRA Project in Cloud B only. 
+    They will have to replicate this process in Cloud A as well. 
 
 Some of these catalog items are also on a fire-and-forget basis (e.g. Firewall-as-a-Service). This means even if the VRA deployment is deleted, the Firewall Rule will still persist in NSX-T. This also implies that 2 separate deployments have to be created just to create and delete a firewall rule. 
 
-[To be confirmed] ~~Moreover, there is currently no known method to perform source control of resources in SDC. This implies that infrastructure in Cloud B could potentially be inconsistent with Cloud B.~~
+[To be confirmed] ~~Moreover, there is currently no known method to perform source control of resources in Cloud A/B. This implies that infrastructure in Cloud B could potentially be inconsistent with Cloud B.~~
 
-> **Ultimately, there is a need to reduce that resource management overhead for developers, providing them with a more streamlined developer experience in SDC.**
+> **Ultimately, there is a need to reduce that resource management overhead for developers, providing them with a more streamlined developer experience in Cloud A/B.**
 
 ### **1.2. Objectives**
 
-We aim to enable developers with a platform to utilize Infrastructure-as-Code (IaC) to provision our SDC Resources.
+We aim to enable developers with a platform to utilize Infrastructure-as-Code (IaC) to provision our Cloud A/B Resources.
 
 ### **1.3. Design Considerations**
 1. Developers will still follow the VRA Project Construct
      - Can only request for resources within their project resource limits
      - Follows the RBAC in VRA --> unable to bypass any approval policies 
-2. Resources provisioned through Terraform will still be integrated with our existing services in SDC 
+2. Resources provisioned through Terraform will still be integrated with our existing services in Cloud A/B 
 3. Developers should be able to manage their IaC using source control tools e.g. Gitlab 
 
 ### **1.4. Project Scope**
-1. To propose an operational design to enable IaC for SDC Resources
+1. To propose an operational design to enable IaC for Cloud A/B Resources
 2. To refactor our VRA Resources to be idempotent and immutable --> allowing these services to be IaC-Compatible
 3. To enable CI/CD of IaC templates 
-4. To perform a walkthrough of declaring SDC resources from a developers' perspective
+4. To perform a walkthrough of declaring Cloud A/B resources from a developers' perspective
 
 Our scope of work will be done in Cloud B first. 
 
 ## **2. Terraform Design**
 ---
 ### **2.1. Option 1: Configuring Terraform Integration in VRA**
-    VRA + Terraform --> SDC Resources
+    VRA + Terraform --> Cloud A/B Resources
 
-Option #1 involves configuring Terraform Integration with VRA, allowing Cloud Admins and developers to declare custom Terraform configurations in Cloud Templates. Since Cloud Templates are declarative by default (e.g. Resources will be deleted when the deployment is deleted), we can leverage option #1 to declare resources that are not idempotent in SDC (e.g. Firewall Rules)
+Option #1 involves configuring Terraform Integration with VRA, allowing Cloud Admins and developers to declare custom Terraform configurations in Cloud Templates. Since Cloud Templates are declarative by default (e.g. Resources will be deleted when the deployment is deleted), we can leverage option #1 to declare resources that are not idempotent in Cloud A/B (e.g. Firewall Rules)
 
-The general developer process flow will be very similar to what is present in SDC. The Terraform configurations are abstracted from the developers (only declared in Cloud Templates).
+The general developer process flow will be very similar to what is present in Cloud A/B. The Terraform configurations are abstracted from the developers (only declared in Cloud Templates).
 
 #### **Pros**
 - Using NSX-T Terraform Provider, we can declare the following in our Cloud Templates (Hybrid TF-VRA Blueprints): 
@@ -74,7 +75,7 @@ The general developer process flow will be very similar to what is present in SD
 
 
 ### **2.2. Option 2: Using External Terraform to interface with VRA**
-    Terraform [External] --> SDC Resources
+    Terraform [External] --> Cloud A/B Resources
 
 Option #2 involves using an external Terraform Runtime to interface with VRA to create resources. 
 
@@ -87,14 +88,14 @@ We will create a public repository (E.g. Terraform) within our self-hosted Gitla
 Developers are free to fork the repository and configure their own custom Terraform Configuration templates to state how much resources they need. 
 
 The general developer process flow will be as follows: 
-1. Developers spinning up a Jumphost Server (JH) in SDC
+1. Developers spinning up a Jumphost Server (JH) in Cloud A/B
 2. Git clone the Terraform Repository into JH and/or pull their custom Terraform configurations from their own repositories
 3. Run shellscript to get developer's VRA refresh token --> update it in their Terraform Variables file
 4. Terraform init --> Terraform plan --> Terraform Apply
 
 #### **Pros**
-- Terraform binaries and configuration templates are stored in Gitlab, allowing version control of SDC infrastructure
-- Developers are able to integrate SDC infrastructure codes into their CI/CD pipeline, streamlining their application development process 
+- Terraform binaries and configuration templates are stored in Gitlab, allowing version control of Cloud A/B infrastructure
+- Developers are able to integrate Cloud A/B infrastructure codes into their CI/CD pipeline, streamlining their application development process 
 
 #### **Cons**
 - Some of our catalog items are not IaC Compatible (e.g. Firewall as a Service). Will need to refactor the catalog items to achieve idempotency 
@@ -106,9 +107,9 @@ The general developer process flow will be as follows:
 - https://blogs.vmware.com/management/2020/01/getting-started-with-vra-terraform-provider.html
 
 ### 2.3. Option 3: Hybrid Approach
-    Terraform [External] --> VRA + Terraform --> SDC Resources
+    Terraform [External] --> VRA + Terraform --> Cloud A/B Resources
 
-Option #2 involves Developers spinning up a Jumphost Server in SDC. 
+Option #2 involves Developers spinning up a Jumphost Server in Cloud A/B. 
 
 
 
@@ -117,13 +118,13 @@ Option #2 involves Developers spinning up a Jumphost Server in SDC.
       - Terraform Providers (VMWare vRealize Automation Provider)
       - Sample Terraform Configuration Templates
       - [From Developers' Repo] Their custom Terraform Configuration files
-    - Spin up a Jumphost in SDC --> pull Terraform binaries and configurations from Gitlab to Jumphost
+    - Spin up a Jumphost in Cloud A/B --> pull Terraform binaries and configurations from Gitlab to Jumphost
     - Initialize Terraform Working Directory in JH
 
 ### 2.4. Option 4 (UNEXPLORED): Gitlab to Interface with VRA
-    Gitlab --> VRA --> SDC Resources
+    Gitlab --> VRA --> Cloud A/B Resources
 
-Option #2 involves Developers spinning up a Jumphost Server in SDC. 
+Option #2 involves Developers spinning up a Jumphost Server in Cloud A/B. 
 
 
 
@@ -132,7 +133,7 @@ Option #2 involves Developers spinning up a Jumphost Server in SDC.
       - Terraform Providers (VMWare vRealize Automation Provider)
       - Sample Terraform Configuration Templates
       - [From Developers' Repo] Their custom Terraform Configuration files
-    - Spin up a Jumphost in SDC --> pull Terraform binaries and configurations from Gitlab to Jumphost
+    - Spin up a Jumphost in Cloud A/B --> pull Terraform binaries and configurations from Gitlab to Jumphost
     - Initialize Terraform Working Directory in JH
 
 > A safe option wil be Option #2
