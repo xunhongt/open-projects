@@ -195,7 +195,7 @@ The proposed developer process flow will be as follows:
 ### Main Deliverables
 - [BARE MINIMUM] Complete Option #2 by March 2023
 - [MEETING EXPECTATIONS] Complete Option #3 by March 2023
-- [EXCEEDING EXPECTATIONS] Complete Option #3 by March 2023
+- [EXCEEDING EXPECTATIONS] Complete Option #4 by March 2023
 
 ### **Dec 2022**
 - [ALL] 
