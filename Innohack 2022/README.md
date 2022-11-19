@@ -134,21 +134,36 @@ Option #4 involves developers interfacing with Gitlab to manage their Terraform 
 - https://docs.gitlab.com/ee/user/project/integrations/webhooks.html
 - https://docs.gitlab.com/ee/user/infrastructure/iac/
 
+> We aim to complete Option #3 before the Judging Panel on **March 2023**.
+
 ## 3. **VRA Design**
 ---
-A characteristic feature of declarative programming languages is that they always describe the desired end result rather than outlining all the intermediate work steps. In declarative programming, the solution path to reach the goal is determined automatically. This works well, provided the specifications of the final state are clearly defined and an appropriate implementation procedure exists. If both of these conditions are met, declarative programming is very efficient.
+A declarative approach to provision infrastructure is where the user defines the desired state of the system, including what resources you need and any properties they should have, and an IaC tool will configure it for you. A declarative approach also keeps a list of the current state of your system objects, which makes taking down the infrastructure simpler to manage.
 
-Essentially, this means 2 factors: 
-- 
+### **3.1. Clear Desired State**
+A basic requirement to enable IaC is that **the resources created must be tied to the VRA Deployments' lifecycle**. If a deployment is deleted from VRA, the resources tied to the deployment will be deleted as well. 
 
-### **3.1. To enforce Immutability of Cloud A/B Resources**
+### **3.2. Immutability**
+An immutable infrastructure implies that the **infrastructure cannot be modified once deployed**. When changes are necessary, you need to deploy afresh, swing traffic to the new instance and decommission old infrastructure. 
 
-Set Day 2 Action Policies to Terraform-compatible cloud templates to prevent modification of resources. If you require any updates on the resources, please request for your resources through GUI
+> One key requirement to enable immutable infrastructure for Cloud A/B Resources is that **application data must be externalized from the managed infrastructure**. This ensures that when new resources are created using Terraform (e.g. Web Servers) and any additional configuration management tools (e.g. Ansible), it will not require an in-place upgrade/modification, or any data migration. The new resources can simply point to the external database, and redirect application traffic from the old instance to the new one. 
 
-### **3.2. To enforce Idempotency of Cloud A/B Resources**
+In the context of Cloud A/B, we can enforce the following to ensure immutability of resources: 
+- Restrict any Day 2 actions on the VRA Deployments --> The only Day 2 action allowed for developers is to delete their own deployments through Terraform. 
 
-Set Day 2 Action Policies to Terraform-compatible cloud templates to prevent modification of resources. If you require any updates on the resources, please request for your resources through GUI
+We also recognize that not all developers are comfortable with creating immutable infrastructure, as they are used to perform in-place upgrades of their application on their existing infrastructure. That's why we are offering an alternative approach to declaring resources in Cloud A/B. Developers can choose to create mutable infrastructure (through GUI) or create immutable infrastructure (through Terraform) that can be version-controlled by Gitlab.
 
+### **3.3. Idempotency**
+Idempotence is a principle of IaC where **certain operations can be applied multiple times without changing the results**. 
+
+Terraform's configuration language is declarative by design, where developers can apply their configurations as many times as they want, but it will not change the end-state of the infrastructure. 
+
+#### **References**
+- https://www.redhat.com/en/topics/automation/what-is-infrastructure-as-code-iac
+- https://learn.microsoft.com/en-us/devops/deliver/what-is-infrastructure-as-code
+- https://www.hashicorp.com/resources/what-is-mutable-vs-immutable-infrastructure
+- https://www.hashicorp.com/tao-of-hashicorp
+- https://blogs.vmware.com/management/2020/01/infrastructure-as-code-and-vrealize-automation.html
 
 ## 4. Enabling CI/CD of Infrastructure Code
 ---
