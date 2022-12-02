@@ -382,6 +382,8 @@ Data Sources details: https://developer.hashicorp.com/terraform/language/data-so
     
 A Data Source = a piece of Read-only information that is fetched from the provider everytime you run Terraform --> Another way to query the provider's API for data to make the data available to the rest of the Terraform code. 
 
+## **3. Managing Terraform State**
+---
 
 ## **Terraform - Command Cheatsheet**
 ---
