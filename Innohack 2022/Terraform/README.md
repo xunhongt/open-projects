@@ -309,7 +309,8 @@ Output Variable Details: https://developer.hashicorp.com/terraform/language/valu
     
 Every Terraform resource supports several lifecycle settings that configure how the resource is created, updated and deleted.
 
-E.g. set *create_before_destroy* --> Terraform will invert the order in which it replaces resources (create replacement resource first, then delete old resource)
+- set *create_before_destroy* --> Terraform will invert the order in which it replaces resources (create replacement resource first, then delete old resource)
+- set *prevent_destroy* --> Will cause Terraform to exit with error, if user decides to destroy resource 
 
         resource "aws_launch_configuration" "example" {
             image_id = "ami-0fb653ca2d3203ac1"
@@ -377,20 +378,165 @@ You can combine data sources together:
 
 Data Sources details: https://developer.hashicorp.com/terraform/language/data-sources
 
----
-**To use data sources** 
-    
-A Data Source = a piece of Read-only information that is fetched from the provider everytime you run Terraform --> Another way to query the provider's API for data to make the data available to the rest of the Terraform code. 
 
 ## **3. Managing Terraform State**
 ---
+
+**Terraform State** 
+    
+When you run Terraform in a working directory, a *terraform.tfstate* is created: 
+- Custom JSON format that records a mapping from the TErraform resources in your configuration files, to the representation of those resources in the real world. 
+- E.g. Resource with type *aws_instance* and name *example* corresponds to an EC2 instance in AWS account with ID xxx 
+> State File format is a private API that is meant only for internal use within Terraform --> **NEVER EDIT THE TERRAFORM STATE FILES**
+
+Only useful if you are **storing state for a personal project**. To use Terraform as a Team on a real project:
+- Shared Storage for State Files --> Need to store them in a shared location
+- Locking State Files --> Prevent race conditions from happening when Terraform state files are concurrently updated 
+- Isolating State Files --> Best practice to isolate different environments 
+
+**Terraform Backend** 
+
+Terraform's built-in support for remote backend --> Alternative approach to store State Files in a shared location
+- Determines how Terraform loads and stores state 
+- Default Backend = Local Backend --> Stores state files on local disk 
+
+Pros of using Terraform Remote Backends:
+- Prevent Manual Error --> Terraform will automatically load state file from backend everytime you run Plan or Apply 
+- Allow Locking of State Files --> Most Remote Backends natively support locking; Running Terraform Apply will automatically create a lock (can configure timeout for lock)
+- Allow use of Secrets --> Most Remote Backends support Encryption in Transit/Rest of State File
+
+To create Terraform Backend, add the following to your Terraform Code: 
+
+        terraform {
+            backend "<BACKEND_NAME>" {
+                [CONFIG...]
+            }
+        }
+- BACKEND_NAME = Name of the backend you want to use (e.g. S3)
+- CONFIG = One or more Arguments that are specific to the backend
+
+> This Demo uses AWS S3 as its Terraform Backend, and State File locking via DynamoDB
+
+**1. Terraform Configuration to create S3 and DynamoDB on AWS** 
+
+        -- main.tf --
+
+        #======= PROVIDER ===========
+        
+        provider "aws" {
+            region = "us-east-2"
+        }
+
+        #======= CREATE S3 BUCKET ===========
+        
+        resource "aws_s3_bucket" "terraform_state" {
+            bucket = "terraform-up-and-running-state"
+
+            # Prevent accidental deletion of this S3 bucket
+            lifecycle {
+                prevent_destroy = true
+            }
+        }
+
+        #======= ENABLE BUCKET VERSIONING - see the full revision history of your state files ===========
+        
+        resource "aws_s3_bucket_versioning" "enabled" {
+            bucket = aws_s3_bucket.terraform_state.id
+
+            versioning_configuration {
+                status = "Enabled"
+            }
+        }
+
+        #======= ENABLE SERVER-SIDE ENCRYPTION ===========
+
+        resource "aws_s3_bucket_server_side_encryption_configuration" "default" {
+            bucket = aws_s3_bucket.terraform_state.id
+            
+            rule {
+                apply_server_side_encryption_by_default {
+                    sse_algorithm = "AES256"
+                }
+            }
+        }
+
+        #======= BLOCK ALL PUBLIC ACCESS TO S3 BUCKET ===========
+        
+        resource "aws_s3_bucket_public_access_block" "public_access" {
+            bucket = aws_s3_bucket.terraform_state.id
+            block_public_acls = true
+            block_public_policy = true
+            ignore_public_acls = true
+            restrict_public_buckets = true
+        }
+
+        #======= CREATE DYNAMODB TABLE ===========
+        
+        resource "aws_dynamodb_table" "terraform_locks" {
+            name = "terraform-up-and-running-locks"
+            billing_mode = "PAY_PER_REQUEST"
+            hash_key = "LockID"
+
+            attribute {
+                name = "LockID"
+                type = "S"
+            }
+        }
+
+**2. Terraform Configuration to add Backend** 
+
+        -- main.tf --
+        
+        terraform {
+
+        #======= SET BACKEND ===========
+
+            backend "s3" {
+                # Replace this with your bucket name!
+                bucket = "terraform-up-and-running-state"
+                key = "global/s3/terraform.tfstate"
+                region = "us-east-2"
+
+                # Replace this with your DynamoDB table name!
+                dynamodb_table = "terraform-up-and-running-locks"
+                encrypt = true
+            }
+
+        }
+
+        #======= OUTPUT VARIABLES TO SHOW S3 BUCKET ARN for Backend ===========
+
+        output "s3_bucket_arn" {
+            value = aws_s3_bucket.terraform_state.arn
+            description = "The ARN of the S3 bucket"
+        }
+
+        output "dynamodb_table_name" {
+            value = aws_dynamodb_table.terraform_locks.name
+            description = "The name of the DynamoDB table"
+        }
+
+Once you run *terraform init*, Terraform will automatically detect that you already have a state file locally and prompt you to copy it to the new S3 backend.
+
+Terraform automatically push and pulls state to/from S3, and S3 is storing every revision of the state file. 
+
+
+Terraform Backend Details: https://developer.hashicorp.com/terraform/language/settings/backends/configuration
+Gitlab Managed Terraform State: https://docs.gitlab.com/ee/user/infrastructure/iac/terraform_state.html
+
+**3. Terraform Backend - Limitations** 
+- [IN THE INSTANCE OF THIS DEMO]: Need to deploy S3 + DynamoDB with a local backend first
+  - Add Remote backend configuration in Terraform code, and run terraform init to copy local state to S3
+  - If you want to delete the S3 Bucket and DynamoDB --> need to remove backend config, run terraform init to copy Terraform state back to local disk; then run Terraform destroy
+- **Backend Block in Terraform does not allow you to use any variables/references**
+  - Need to manually copy the S3 bucket name, region etc. into every Terraform module
 
 ## **Terraform - Command Cheatsheet**
 ---
 
 | Command | Description |
 | ------  | ----------- |
-| terraform init  | Prepare the working directory for use with Terraform |
+| terraform init  | Prepare the working directory for use with Terraform; also configures your Terraform Backend |
 | terraform plan  | Generates an execution plan on what Terraform is provisioning |
 | terraform apply  | Creates the resources based on the configuration files |
 | terraform graph  | Shows a dependency map for resources created by Terraform |
