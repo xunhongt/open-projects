@@ -807,6 +807,7 @@ Terraform Modules can have input parameters as well. To use inputs, use input va
             db_remote_state_key = "stage/data-stores/mysql/terraform.tfstate"
         }
 
+Input Values: https://developer.hashicorp.com/terraform/language/values/variables
 Creating Modules: https://developer.hashicorp.com/terraform/language/modules/develop
 
 ---
@@ -848,6 +849,8 @@ Example usage of a local value:
             }
         }
 
+Local Values: https://developer.hashicorp.com/terraform/language/values/locals
+
 ---
 ### **Module Output**
 You can output variables to create output variables to be used for each Terraform Module. This can be defined in the outputs.tf file within the Module root directory.
@@ -865,7 +868,168 @@ To access a Module output variable:
 
         e.g. module.frontend.asg_name
 
+Output Values: https://developer.hashicorp.com/terraform/language/values/outputs
 
+---
+### **Module Gotchas**
+
+**1. Path References**
+
+When you use File Paths (in templatefile), Terraform interprets the path relative to the current working directory
+> **templatefile will not work if you use templatefile in a module that's defined in a separate folder (a reusable module)**
+
+To resolve this issue, you use an expression called *path reference* which is of the form path.<"TYPE">: 
+- path.module --> Returns Filesystem path of module where expression is defined
+- path.root --> Returns Filesystem path of the root module
+- path.cwd --> Returns Filesystem path of current working directory
+
+        E.g. to use Path References: 
+
+        user_data = templatefile("${path.module}/user-data.sh", {
+            server_port = var.server_port
+            db_address = data.terraform_remote_state.db.outputs.address
+            db_port = data.terraform_remote_state.db.outputs.port
+        })
+
+**2. Inline Blocks**
+
+Terraform configurations can be defined as inline blocks or separate resources. 
+
+An inline block is an argument that you set within a resource of the format. 
+
+        E.g. Inline Block: 
+
+        resource "xxx" "yyy" {
+            <NAME> {
+                [CONFIG...]
+            }
+        }
+- NAME --> Name of the inline block (e.g. ingress)
+- CONFIG --> One or more arguments specific to that inline block
+
+You can then define resources (e.g. ingress & egress rules) using either inline blocks (within aws_security_group resource) or separate resources (aws_security_group_rule resources).
+
+> **If you try mixing both inline blocks and separate resources, due to how Terraform is designed, you will get errors where configurations conflict and overwrite one another.**
+
+> **NOTE: Always use separate resources when creating a module!**
+
+Using separate resources allow them to be used anywhere, whereas an inline block can only be added within the module that creates a resource --> Makes your module more flexible and configurable 
+
+E.g. for AWS security groups: 
+
+        -- To use Inline Blocks -- 
+
+        resource "aws_security_group" "alb" {
+            name = "${var.cluster_name}-alb"
+
+
+            ingress {
+                from_port = local.http_port
+                to_port = local.http_port
+                protocol = local.tcp_protocol
+                cidr_blocks = local.all_ips
+            }
+
+            egress {
+                from_port = local.any_port
+                to_port = local.any_port
+                protocol = local.any_protocol
+                cidr_blocks = local.all_ips
+            }
+        }
+There is no way for the user of the module to add additional ingress/egress rules from outside of this module. 
+
+        -- To use Separate Resources -- 
+
+        resource "aws_security_group" "alb" {
+            name = "${var.cluster_name}-alb"
+        }
+
+        resource "aws_security_group_rule" "allow_http_inbound" {
+            type = "ingress"
+            security_group_id = aws_security_group.alb.id
+            from_port = local.http_port
+            to_port = local.http_port
+            protocol = local.tcp_protocol
+            cidr_blocks = local.all_ips
+        }
+
+        resource "aws_security_group_rule" "allow_all_outbound" {
+            type = "egress"
+            security_group_id = aws_security_group.alb.id
+            from_port = local.any_port
+            to_port = local.any_port
+            protocol = local.any_protocol
+            cidr_blocks = local.all_ips
+        }
+
+If you want to expose an extra port in the Staging environment SG, can always add an aws_security_group_rule resource to your main.tf file: 
+
+        module "webserver_cluster" {
+            source = "../../../modules/services/webserver-cluster"
+
+            # (parameters hidden for clarity)
+        }
+
+        resource "aws_security_group_rule" "allow_testing_inbound" {
+            type = "ingress"
+            security_group_id = module.webserver_cluster.alb_security_group_id
+
+            from_port = 12345
+            to_port = 12345
+            protocol = "tcp"
+            cidr_blocks = ["0.0.0.0/0"]
+        }
+
+---
+### **Module Versioning**
+Terraform Module source parameters support the following types of module sources: 
+- Local File Path
+- Git URLs
+- Mercurial URLs
+- arbitrary HTTP URLs
+
+You can use this to version your modules so that different environments can point to different versions of the module. 
+
+You can put the code for the module in a separate Git repository, and set the source parameter to the repository's URL --> Spread out the Terraform code to at least 2 repositories: 
+- modules --> to store reusable modules 
+- live --> live infrastructure that you are running in your environment  
+
+Example File Directory: 
+- modules
+  - services
+    - webserver-cluster
+- live
+  - stage
+    - webserver-cluster
+    - data-stores
+      - mysql
+  - prod
+    - services
+      - webserver-cluster
+    - data-stores
+      - mysql
+  - global
+    - s3
+
+To use a versioned module, call the following in the main.tf of your Terraform Configurations: 
+
+        module "webserver_cluster" {
+            source = "github.com/foo/modules//services/webserver-cluster?ref=v0.0.1"
+
+            cluster_name = "webservers-stage"
+            db_remote_state_bucket = "(YOUR_BUCKET_NAME)"
+            db_remote_state_key = "stage/data-stores/mysql/terraform.tfstate"
+
+            instance_type = "t2.micro"
+            min_size = 2
+            max_size = 2
+        }
+
+Can try using semantic versioning naming conventions: 
+- The MAJOR version when you make incompatible API changes
+- The MINOR version when you add functionality in a backwardcompatible manner
+- The PATCH version when you make backward-compatible bug fixes
 
 ## **Terraform - Command Cheatsheet**
 ---
