@@ -1,8 +1,10 @@
 # **TERRAFORM - UP AND RUNNING: Writing Infrastructure as Code**
 
+## Refer to Sample Code [Here](https://github.com/brikis98/terraform-up-and-running-code)
+
 ## **1. Why Terraform**
 ---
-### **1.1. Benefits**
+### **Benefits**
 - Configuration Management vs Provisioning
 - Mutable Infrastructure vs Immutable Infrastructure
 - Procedural Language vs Declarative Language
@@ -47,8 +49,8 @@
 ---
 Terraform is written in Hashicorp Configuration Language (HCL) in files with .tf extension. Terraform creates infrastructure across a wide variety of platforms (providers). 
 
-> **NOTE: Always refer to Terraform Provider Documentations!**
-**Install Terraform**
+### > **NOTE: Always refer to Terraform Provider Documentations!**
+### **Install Terraform**
    
         Windows: 
             choco install terraform 
@@ -63,7 +65,7 @@ Terraform is written in Hashicorp Configuration Language (HCL) in files with .tf
 **For this demo, create AWS Free Tier account**
 
 ---
-**The first step to use Terraform is to configure a provider you want to use:**
+###  **The first step to use Terraform is to configure a provider you want to use:**
 
 Create an empty folder and put a file in it called **main.tf**
    
@@ -91,7 +93,7 @@ E.g. to create a single server in AWS, add the following in the main.tf file:
         }
 
 ---
-**Run Terraform Init to initialize the backend**
+### **Run Terraform Init to initialize the backend**
 
     The terraform binary only contains basic functionality for Terraform, but does not come with code for any of the providers (e.g. AWS, Azure, GCP).  
     > *terraform init* scans the HCL code, figure out which provider is used, and download the code for them 
@@ -99,7 +101,7 @@ E.g. to create a single server in AWS, add the following in the main.tf file:
     By default, the provider code is downloaded into a *.terraform* folder (Terraform's scratch directory). Terraform records information about the provider code into a *.terraform.lock.hcl* file
 
 ---
-**Run Terraform Plan**
+### **Run Terraform Plan**
 
     The plan command lets you see what Terraform will do before actually making any change --> good way to sanity check your code
 
@@ -107,19 +109,19 @@ E.g. to create a single server in AWS, add the following in the main.tf file:
     - Anything with a (-) sign will be destroyed 
     - Anything with a (~) sign will be modified in place
 ---
-**Run Terraform Apply**
+### **Run Terraform Apply**
 
     The apply command allows Terraform to create the declared resources
 ---
-**To modify resources, you can edit on the main.tf file further, and run terraform apply**
+### **To modify resources, you can edit on the main.tf file further, and run terraform apply**
 
 ---
-**To delete resources, just run Terraform destroy**
+### **To delete resources, just run Terraform destroy**
 
 There is no undo for the destroy command. Terraform will build the dependency graph and delete all resources in the correct order (using much parallelism as possible)
 
 ---
-**Version Control**
+### **Version Control**
 
 Ideally, you would want to share your code with other team members. 
 
@@ -197,7 +199,7 @@ To run additional post-provision scripts after your server is provisioned, AWS E
 - Create a new resource (AWS Security Group) to allow incoming TCP requests on port 8080 from CIDR block 0.0.0.0/0 (any traffic)
 
 ---
-**To reference values from other resources**
+### **To reference values from other resources**
    
 To access the ID of the security group resource, you need a resource attribute reference: 
 
@@ -212,7 +214,7 @@ E.g. Security Groups export an attribute called id, so the expression to referen
 Adding references from one resource to another creates an implicit dependency. Terraform parses these dependencies, builds a dependency graph from them and use that to determine which order it should create resources. 
 
 ---
-**To define input variables**
+### **To define input variables**
    
 Terraform allows us to define input variables: 
 
@@ -276,7 +278,7 @@ To use a reference inside a string literal, you can use a new type of expression
                         EOF
 
 ---
-**To define output variables** 
+### **To define output variables** 
     
 Terraform also allows us to define output variables via the following syntax: 
 
@@ -305,7 +307,7 @@ You can use terraform output to list down output values from the terraform apply
 Output Variable Details: https://developer.hashicorp.com/terraform/language/values/outputs
 
 ---
-**To define lifecycles** 
+### **To define lifecycles** 
     
 Every Terraform resource supports several lifecycle settings that configure how the resource is created, updated and deleted.
 
@@ -333,7 +335,7 @@ Every Terraform resource supports several lifecycle settings that configure how 
 Full list of Parameters in Lifecycle meta-argument: https://developer.hashicorp.com/terraform/language/meta-arguments/lifecycle
 
 ---
-**To use data sources** 
+### **To use data sources** 
     
 A Data Source = a piece of Read-only information that is fetched from the provider everytime you run Terraform --> Another way to query the provider's API for data to make the data available to the rest of the Terraform code. 
 
@@ -380,9 +382,9 @@ Data Sources details: https://developer.hashicorp.com/terraform/language/data-so
 
 
 ## **3. Managing Terraform State**
----
 
-**Terraform State** 
+---
+### **Terraform State** 
     
 When you run Terraform in a working directory, a *terraform.tfstate* is created: 
 - Custom JSON format that records a mapping from the TErraform resources in your configuration files, to the representation of those resources in the real world. 
@@ -394,7 +396,8 @@ Only useful if you are **storing state for a personal project**. To use Terrafor
 - Locking State Files --> Prevent race conditions from happening when Terraform state files are concurrently updated 
 - Isolating State Files --> Best practice to isolate different environments 
 
-**Terraform Backend** 
+---
+### **Terraform Backend** 
 
 Terraform's built-in support for remote backend --> Alternative approach to store State Files in a shared location
 - Determines how Terraform loads and stores state 
@@ -531,6 +534,339 @@ Gitlab Managed Terraform State: https://docs.gitlab.com/ee/user/infrastructure/i
 - **Backend Block in Terraform does not allow you to use any variables/references**
   - Need to manually copy the S3 bucket name, region etc. into every Terraform module
 
+---
+### *To isolate State Files:** 
+
+**1. Workspaces**
+
+Terraform Workspaces allow users to store Terraform states in multiple separate, named workspaces.
+- It starts with a single workspace called "default"
+
+Workspace-related commands:
+
+        terraform workspace show --> shows current workspace used in Terraform
+
+        terraform workspace new <WORKSPACE_NAME> --> Creates a new workspace 
+
+        terraform workspace list --> shows list of created workspaces in Terraform
+
+        terraform workspace select <WORKSPACE_NAME> --> Choose your selected workspace 
+
+If a new workspace is selected, and you are running a remote-backend, a separate state file will be created in the working directory.
+
+Pros:
+- Quick method to establish isolation of resources within a personal project
+
+Cons: 
+- State files of all workspaces are stored in the same backend --> Same authentication and access controls are used for all workspaces 
+- Workspaces are not visible in the code/terminal unless you run the *terraform workspace* command --> Likely to create errors in IaC code
+
+> **Because of these drawbacks, workspaces are not a suitable mechanism for isolating one environment from another (e.g. Isolating Staging from Production)**
+
+Workspace details: https://developer.hashicorp.com/terraform/cloud-docs/workspaces
+
+**2. File Layout**
+
+To achieve full isolation between environments, you need to do the following: 
+- Put Terraform configuration files for each environment into a separate folder 
+  - E.g. Staging configurations --> put in *Stage* folder; Production configurations --> put in *Prod* folder
+- Configure different backend for each environment using different authentication mechanisms and access controls
+
+This isolation concept can also be applied to Terraform Modules and your various components.
+
+**Example Directory Structure:**
+- Stage
+  - VMs
+    - variables.tf
+    - outputs.tf
+    - main.tf
+  - Network
+    - variables.tf
+    - outputs.tf
+    - main.tf
+- Prod
+  - VMs
+    - variables.tf
+    - outputs.tf
+    - main.tf
+  - Network
+    - variables.tf
+    - outputs.tf
+    - main.tf
+- Global
+  - backend
+    - main.tf
+    - outputs.tf
+
+Within each component, there are Terraform configuration files, which are organized according to the following naming conventions: 
+
+[MINIMUM]
+- variables.tf --> Input Variables
+- outputs.tf --> Output Variables
+- main.tf --> Resources and data sources 
+
+[OPTIONAL]
+- dependencies.tf --> Put all data sources in a dependencies.tf file to make it easier to see what external things the code depends on
+- providers.tf --> Put all provider blocks into a providers.tf file to keep track of what providers the code talks to, and what authentication methods you need
+- main-xxx.tf --> Further segregate your Terraform resources based on components
+
+> When you run Terraform, it simply looks for files in the current directory with the .tf extension --> can use whatever filenames you want! 
+
+> When moving contents within each folder, make sure to move the .terraform folder as well --> Don't need to reinitialize everything!
+
+Pros:
+- Clear code/environment layout 
+- Isolation of configuration across different environments --> Limit blast radius for wrong configurations
+
+Cons:
+- Working with multiple folders --> Will need to run Terraform apply separately in each folder
+  - [SOLUTION] terragrunt --> use the run-all command
+- Requires a lot of duplication (many copy/paste)
+  - [SOLUTION] Can Terraform modules to keep the code DRY (Don't Repeat Yourself)
+- Hard to use Resource Dependencies --> Since Infrastructure lies in different folders
+  - [SOLUTION] terragrunt --> dependency blocks 
+  - [SOLUTION] terraform_remote_state
+
+Directory Structure: https://developer.hashicorp.com/terraform/language/modules/develop/structure
+
+---
+### **terraform_remote_state Data Source** 
+You can use this data source to fetch the Terraform state file stored by another set of Terraform configurations. 
+
+To call a terraform_remote_state Data Source: 
+
+        data "terraform_remote_state" "db" {
+            backend = "s3"
+
+            config = {
+                bucket = "(YOUR_BUCKET_NAME)"
+                key = "stage/data-stores/mysql/terraform.tfstate"
+                region = "us-east-2"
+            }
+        }
+
+The config of the terraform_remote_state Data Source refers to the remote backend Terraform State stored on AWS S3. 
+
+Like all data sources, the data returned is read-only. 
+
+To read a terraform_remote_state data source using an attribute reference: 
+
+        data.terraform_remote_state.<NAME>.outputs.<ATTRIBUTE>
+
+terraform_remote_state Data Source: https://developer.hashicorp.com/terraform/language/state/remote-state-data
+
+---
+### **templatefile Function** 
+Terraform includes a number of built-in functions that allow us to execute using an expression of the form: 
+
+        function_name(...)
+
+        e.g. format(<FMT>, <ARGS>, ...)
+
+*templatefile* reads the file at the given path and renders its content as a template using a supplied set of template variables. This reduces the need to define inline scripts to make your Terraform configurations messier. 
+
+To call a templatefile function: 
+
+        templatefile(<PATH>, <VARS>)
+
+This means the file at PATH can use the string interpolation syntax in Terraform (${...}) and Terraform will render the contents of the file, filling variable references from VARS. 
+
+        Example: creating a stage/services/webserver-cluster/user-data.sh
+
+            #!/bin/bash
+            cat > index.xhtml <<EOF
+            <h1>Hello, World</h1>
+            <p>DB address: ${db_address}</p>
+
+            <p>DB port: ${db_port}</p>
+            EOF
+            nohup busybox httpd -f -p ${server_port} &
+
+        Calling the templatefile function and pass it in the variables as a map within the Terraform Configuration: 
+
+            resource "aws_launch_configuration" "example" {
+                image_id = "ami-0fb653ca2d3203ac1"
+                instance_type = "t2.micro"
+                security_groups = [aws_security_group.instance.id]
+
+                # Render the User Data script as a template
+                user_data = templatefile("user-data.sh", {
+                    server_port = var.server_port
+                    db_address = data.terraform_remote_state.db.outputs.address
+                    db_port = data.terraform_remote_state.db.outputs.port
+                })
+
+                # Required when using a launch configuration with an auto scaling group.
+                lifecycle {
+                    create_before_destroy = true
+                }
+            }
+
+
+templatefile Function: https://developer.hashicorp.com/terraform/language/functions/templatefile
+
+## **4. Terraform Modules**
+You can put your code inside a Terraform Module and reuse that module in multiple places throughout your code --> To create reusable, maintainable and testable Terraform code. 
+
+---
+### **Module Basics**
+Any set of Terraform configuration files in a folder is called a Module. If you run apply directly on a module, it's referred to as a root module. 
+
+To use a module in your Terraform Code: 
+
+        module "<NAME>" {
+            source = "<SOURCE>"
+            [CONFIG ...]
+        }
+
+- NAME = An identifier that you can use through the Terraform code to refer to this module
+- SOURCE = Path where the module code can be found 
+- CONFIG = Arguments specific to the module
+
+        -- Example -- 
+
+        provider "aws" {
+            region = "us-east-2"
+        }
+
+        # This module can be reused if you state the file path of the module in the source
+        module "webserver_cluster" {
+            source = "../../../modules/services/webserver-cluster"
+        }
+
+NOTE: If you use modules in different environments using this method, the Method configurations are hard-coded; so if you use this module more than once in the same AWS account, you'll get name conflict errors. 
+
+> **Need to add configurable inputs to the module, so that it can behave differently in different environments.**  
+
+---
+### **Module Inputs**
+Terraform Modules can have input parameters as well. To use inputs, use input variables.
+
+**1. Create a variables.tf file in the module root directory**
+
+        -- variables.tf --
+
+        variable "cluster_name" {
+            description = "The name to use for all the cluster resources"
+            type = string
+        }
+
+        variable "db_remote_state_bucket" {
+            description = "The name of the S3 bucket for the database's remote state"
+            type = string
+        }
+
+        variable "db_remote_state_key" {
+            description = "The path for the database's remote state in S3"
+            type = string
+        }
+
+**2. Edit main.tf file & terraform_remote_state in module root directory to use variables**
+
+        -- main.tf --
+
+        resource "aws_security_group" "alb" {
+            name = "${var.cluster_name}-alb"
+
+            ingress {
+                from_port = 80
+                to_port = 80
+                protocol = "tcp"
+                cidr_blocks = ["0.0.0.0/0"]
+            }
+
+            egress {
+                from_port = 0
+                to_port = 0
+                protocol = "-1"
+                cidr_blocks = ["0.0.0.0/0"]
+            }
+        }
+
+        -- terraform_remote_state --
+
+        data "terraform_remote_state" "db" {
+            backend = "s3"
+
+            config = {
+                bucket = var.db_remote_state_bucket
+                key = var.db_remote_state_key
+                region = "us-east-2"
+            }
+        }
+
+- ${var.cluster_name} --> used when you want to add it in a string 
+
+**3. Update your desired Terraform Configuration file to include the Module inputs**
+
+        module "webserver_cluster" {
+            source = "../../../modules/services/webserver-cluster"
+
+            cluster_name = "webservers-stage"
+            db_remote_state_bucket = "(YOUR_BUCKET_NAME)"
+            db_remote_state_key = "stage/data-stores/mysql/terraform.tfstate"
+        }
+
+Creating Modules: https://developer.hashicorp.com/terraform/language/modules/develop
+
+---
+### **Module Locals**
+You can use local values to assign a name to any Terraform expression and to use that name throughout the module --> Local variables
+
+To define local values in a local block within your Terraform code: 
+
+        locals {
+            http_port = 80
+            any_port = 0
+            any_protocol = "-1"
+            tcp_protocol = "tcp"
+            all_ips = ["0.0.0.0/0"]
+        }
+
+To use a local value: 
+
+        local.<VARIABLE_NAME>
+
+Example usage of a local value: 
+
+        -- main.tf -- 
+
+        resource "aws_lb_listener" "http" {
+            load_balancer_arn = aws_lb.example.arn
+            port = local.http_port
+            protocol = "HTTP"
+
+            # By default, return a simple 404 page
+            default_action {
+                type = "fixed-response"
+
+                fixed_response {
+                    content_type = "text/plain"
+                    message_body = "404: page not found"
+                    status_code = 404
+                }
+            }
+        }
+
+---
+### **Module Output**
+You can output variables to create output variables to be used for each Terraform Module. This can be defined in the outputs.tf file within the Module root directory.
+
+        -- outputs.tf -- 
+
+        output "asg_name" {
+            value = aws_autoscaling_group.example.name
+            description = "The name of the Auto Scaling Group"
+        }
+
+To access a Module output variable: 
+
+        module.<MODULE_NAME>.<OUTPUT_NAME>
+
+        e.g. module.frontend.asg_name
+
+
+
 ## **Terraform - Command Cheatsheet**
 ---
 
@@ -539,9 +875,11 @@ Gitlab Managed Terraform State: https://docs.gitlab.com/ee/user/infrastructure/i
 | terraform init  | Prepare the working directory for use with Terraform; also configures your Terraform Backend |
 | terraform plan  | Generates an execution plan on what Terraform is provisioning |
 | terraform apply  | Creates the resources based on the configuration files |
+| terraform destroy  | Delete all resources created by Terraform |
 | terraform graph  | Shows a dependency map for resources created by Terraform |
 | terraform output  | List all outputs of terraform apply without applying any changes |
-| terraform destroy  | Delete all resources created by Terraform |
+| terraform workspace  | Perform workspace related commands on Terraform |
+
 
 ## **References**
 ---
