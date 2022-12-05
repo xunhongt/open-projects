@@ -1031,6 +1031,177 @@ Can try using semantic versioning naming conventions:
 - The MINOR version when you add functionality in a backwardcompatible manner
 - The PATCH version when you make backward-compatible bug fixes
 
+## **5. Terraform Tips and Tricks: Loops, If-Statements, Deployment and Gotchas**
+
+---
+### **Loops**
+You can use the following looping constructs to iterate in your Terraform Code: 
+
+**1. count**
+Every Terraform resource has a meta-parameter called count. It defines how many copies of the resource are required to create. 
+
+To use the *count* parameter:
+
+        #--- This creates 3 IAM users called "Neo" ---
+
+        resource "aws_iam_user" "example" {
+            count = 3
+            name = "neo"
+        }
+
+        #--- To get the index of each iteration in the loop ---
+        # This creates 3 IAM users called ("neo.0", "neo.1", "neo.2")
+
+        resource "aws_iam_user" "example" {
+            count = 3
+            name = "neo.${count.index}"
+        }
+
+You can also define an array variable to be iterated: 
+
+        #--- Define an Array variable called user_names ---
+
+        variable "user_names" {
+            description = "Create IAM users with these names"
+            type = list(string)
+            default = ["neo", "trinity", "morpheus"]
+        }
+
+Array lookup Syntax: 
+
+        ARRAY[<INDEX>]
+
+        e.g. var.user_names[1]
+
+You can combine the Array variable with the *length* parameter to loop through an Array: 
+
+        #--- To declare the length function ---
+
+        length(<ARRAY>)
+
+        #--- To loop through an Array in Terraform ---
+
+        resource "aws_iam_user" "example" {
+            count = length(var.user_names)
+            name = var.user_names[count.index]
+        }
+
+Once you used count on a resource, it becomes an array of resources, which can be accessed via the following: 
+
+        <PROVIDER>_<TYPE>.<NAME>[INDEX].ATTRIBUTE
+
+        #----- E.g. To return the output for the first IAM User's ARN -----:
+
+        output "first_arn" {
+            value = aws_iam_user.example[0].arn
+            description = "The ARN for the first user"
+        }
+
+        #----- E.g. To return all IAM User's ARNs -----:
+
+        output "first_arn" {
+            value = aws_iam_user.example[*].arn
+            description = "The ARN for the first user"
+        }
+
+As of Terraform 0.13, you can also use the *count* parameter on modules. 
+
+        #----- Terraform Code -----
+
+        module "users" {
+            source = "../../../modules/landing-zone/iam-user"
+
+            count = length(var.user_names)
+            user_name = var.user_names[count.index]
+        }
+
+        #----- Output Variables -----
+
+        output "user_arns" {
+            value = module.users[*].user_arn
+            description = "The ARNs of the created IAM users"
+        }
+
+Pros: 
+- *count* works pretty well with resources & modules
+
+Cons:
+- You cannot *count* within a resource to loop over inline blocks 
+- Terraform identifies each resource within the array by its position (index) in that array. If you remove an item from the middle of an array, all items after it will be modified/deleted
+
+**2. for_each**
+The *for_each* expression allows you to loop over lists, sets and maps to create the following: 
+- multiple copies of an entire resource
+- multiple copies of an inline block within a resource
+- multiple copies of a module
+
+*for_each* syntax: 
+
+        resource "<PROVIDER>_<TYPE>" "<NAME>" {
+            for_each = <COLLECTION>
+            [CONFIG ...]
+        }
+- COLLECTION --> Set/map to loop over 
+  - Lists are not supported when using *for_each* on a resource
+- CONFIG --> one or more arguments that are specific to that resource 
+  - You can use *each.key* / *each.value* to access the key/value of the current item in COLLECTION 
+
+        #--- E.g. for_each on the variable user_names ----
+
+        resource "aws_iam_user" "example" {
+            for_each = toset(var.user_names)
+            name = each.value
+        }
+
+        #--- Output: Map of created users ---
+        output "all_users" {
+            value = aws_iam_user.example
+        }
+
+        #--- Output: To return all the the ARNs of the created users ---
+        output "all_arns" {
+            value = values(aws_iam_user.example)[*].arn
+        }
+- *toset* --> convert var.user_names list into a set 
+- *values* --> return all the values within the map
+
+Once you use *for_each* on a resource, it becomes a map of resources. If you remove an item from the middle of a collection, it will not impact the rest of the resources. 
+
+> **You should favour the use of for_each instead of count to create multiple copies of a resource**
+
+To use *for_each* in modules: 
+
+        #---- Defined in the module ----
+
+        module "users" {
+            source = "../../../modules/landing-zone/iam-user"
+
+            for_each = toset(var.user_names)
+            user_name = each.value
+        }
+
+        #---- Defined in output variables ----
+
+        output "user_arns" {
+            value = values(module.users)[*].user_arn
+            description = "The ARNs of the created IAM users"
+        }
+
+You can also use *for_each* to iterate inline blocks within a resource: 
+
+        dynamic "<VAR_NAME>" {
+            for_each = <COLLECTION>
+
+            content {
+            [CONFIG...]
+            }
+        }
+
+- VAR_NAME --> Name to use for the variable that will store the value of each iteration (After state)
+- COLLECTION --> list/map to iterate over
+- CONTENT --> What to generate for each iteration 
+  - Can use <VAR_NAME>.key / <VAR_NAME>.value within the content block to access the key & value respectively
+
 ## **Terraform - Command Cheatsheet**
 ---
 
