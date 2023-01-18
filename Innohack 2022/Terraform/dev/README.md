@@ -11,4 +11,3 @@ The proposed integration with Gitlab will be as follows:
 ---
 ## **References**
 - [Gitlab Docs - Infrastructure as Code](https://docs.gitlab.com/ee/user/infrastructure/iac/)
-
