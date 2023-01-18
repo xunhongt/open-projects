@@ -1,0 +1,400 @@
+<mxfile host="65bd71144e">
+    <diagram id="3WYpdwOd3Kx3R6XxoM20" name="Page-1">
+        <mxGraphModel dx="1504" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="2" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;" vertex="1" parent="1">
+                    <mxGeometry x="320" y="170" width="860" height="360" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://download.logo.wine/logo/GitLab/GitLab-Logo.wine.png;" vertex="1" parent="1">
+                    <mxGeometry x="320" y="160" width="102.65" height="68.5" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#91C0E3;" vertex="1" parent="1">
+                    <mxGeometry x="350" y="260" width="210" height="260" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" value="&lt;font color=&quot;#000000&quot;&gt;Project: Terraform&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+                    <mxGeometry x="350" y="260" width="220" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;" vertex="1" parent="1">
+                    <mxGeometry x="360" y="289" width="190" height="221" as="geometry"/>
+                </mxCell>
+                <mxCell id="12" value="&lt;font color=&quot;#000000&quot;&gt;Terraform-setup.sh &lt;br&gt;(bootstrap Terraform in Jumphost)&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b1ddf0;strokeColor=#10739e;" vertex="1" parent="1">
+                    <mxGeometry x="370" y="409" width="170" height="51" as="geometry"/>
+                </mxCell>
+                <mxCell id="13" value="&lt;font color=&quot;#000000&quot;&gt;PUBLIC&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#b46504;" vertex="1" parent="1">
+                    <mxGeometry x="350" y="220" width="210" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="14" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#91C0E3;" vertex="1" parent="1">
+                    <mxGeometry x="590" y="260" width="330" height="260" as="geometry"/>
+                </mxCell>
+                <mxCell id="15" value="&lt;font color=&quot;#000000&quot;&gt;Project: Terraform-Cloud-B&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+                    <mxGeometry x="645" y="260" width="220" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="16" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;" vertex="1" parent="1">
+                    <mxGeometry x="600" y="290" width="310" height="220" as="geometry"/>
+                </mxCell>
+                <mxCell id="20" value="&lt;font color=&quot;#000000&quot;&gt;PUBLIC&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#b46504;" vertex="1" parent="1">
+                    <mxGeometry x="590" y="220" width="330" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="22" value="Storing Terraform Modules (1 module = 1 catalog item)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="605" y="290" width="300" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="23" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#CCFFCC;strokeColor=#B09500;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="610" y="324" width="130" height="156" as="geometry"/>
+                </mxCell>
+                <mxCell id="25" value="Virtual-Machines" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="620" y="324" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="26" value="&lt;font color=&quot;#000000&quot;&gt;RHEL&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b1ddf0;strokeColor=#10739e;" vertex="1" parent="1">
+                    <mxGeometry x="615" y="354" width="120" height="23" as="geometry"/>
+                </mxCell>
+                <mxCell id="27" value="&lt;font color=&quot;#000000&quot;&gt;Windows&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b1ddf0;strokeColor=#10739e;" vertex="1" parent="1">
+                    <mxGeometry x="615" y="385.5" width="120" height="23" as="geometry"/>
+                </mxCell>
+                <mxCell id="28" value="&lt;font color=&quot;#000000&quot;&gt;Ubuntu&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b1ddf0;strokeColor=#10739e;" vertex="1" parent="1">
+                    <mxGeometry x="615" y="417.5" width="120" height="22.5" as="geometry"/>
+                </mxCell>
+                <mxCell id="29" value="&lt;font color=&quot;#000000&quot;&gt;Ubuntu-Mate&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b1ddf0;strokeColor=#10739e;" vertex="1" parent="1">
+                    <mxGeometry x="615" y="449" width="120" height="21" as="geometry"/>
+                </mxCell>
+                <mxCell id="30" value="Storing Terraform-related Binaries" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="376.5" y="294" width="157" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="31" value="&lt;font color=&quot;#000000&quot;&gt;Terraform CLI&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b1ddf0;strokeColor=#10739e;" vertex="1" parent="1">
+                    <mxGeometry x="370" y="327.5" width="170" height="23" as="geometry"/>
+                </mxCell>
+                <mxCell id="32" value="&lt;font color=&quot;#000000&quot;&gt;Terraform Configuration Templates&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b1ddf0;strokeColor=#10739e;" vertex="1" parent="1">
+                    <mxGeometry x="370" y="362.5" width="170" height="37.5" as="geometry"/>
+                </mxCell>
+                <mxCell id="33" value="&lt;font color=&quot;#000000&quot;&gt;Terraform Providers&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b1ddf0;strokeColor=#10739e;" vertex="1" parent="1">
+                    <mxGeometry x="370" y="470" width="170" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="34" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#CCFFCC;strokeColor=#B09500;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="760" y="324" width="130" height="156" as="geometry"/>
+                </mxCell>
+                <mxCell id="35" value="Networking" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="770" y="324" width="110" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="36" value="&lt;font color=&quot;#000000&quot;&gt;Security Group&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b1ddf0;strokeColor=#10739e;" vertex="1" parent="1">
+                    <mxGeometry x="765" y="354" width="120" height="23" as="geometry"/>
+                </mxCell>
+                <mxCell id="37" value="&lt;font color=&quot;#000000&quot;&gt;Firewalls&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b1ddf0;strokeColor=#10739e;" vertex="1" parent="1">
+                    <mxGeometry x="765" y="385.5" width="120" height="23" as="geometry"/>
+                </mxCell>
+                <mxCell id="40" value="&lt;span style=&quot;font-size: 20px&quot;&gt;Terraform-Gitlab Projects&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="600" y="179.25" width="360" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="41" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#91C0E3;" vertex="1" parent="1">
+                    <mxGeometry x="940" y="260" width="210" height="260" as="geometry"/>
+                </mxCell>
+                <mxCell id="42" value="&lt;font color=&quot;#000000&quot;&gt;Project: Terraform-nsxt-provider&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+                    <mxGeometry x="940" y="260" width="220" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="43" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;" vertex="1" parent="1">
+                    <mxGeometry x="950" y="289" width="190" height="221" as="geometry"/>
+                </mxCell>
+                <mxCell id="45" value="&lt;font color=&quot;#000000&quot;&gt;PRIVATE&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fad7ac;strokeColor=#b46504;" vertex="1" parent="1">
+                    <mxGeometry x="940" y="220" width="210" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="46" value="Terraform Configuration Files used in VRA Cloud Templates" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="955" y="294" width="180" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="52" value="&lt;font color=&quot;#000000&quot;&gt;Security Group&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b1ddf0;strokeColor=#10739e;" vertex="1" parent="1">
+                    <mxGeometry x="960" y="331" width="170" height="23" as="geometry"/>
+                </mxCell>
+                <mxCell id="54" value="&lt;font color=&quot;#000000&quot;&gt;DFWs&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b1ddf0;strokeColor=#10739e;" vertex="1" parent="1">
+                    <mxGeometry x="960" y="369.75" width="170" height="23" as="geometry"/>
+                </mxCell>
+                <mxCell id="55" value="&lt;font color=&quot;#000000&quot;&gt;GFWs&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b1ddf0;strokeColor=#10739e;" vertex="1" parent="1">
+                    <mxGeometry x="960" y="408.5" width="170" height="23" as="geometry"/>
+                </mxCell>
+                <mxCell id="59" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;" vertex="1" parent="1">
+                    <mxGeometry x="328.46999999999997" y="615" width="1146.67" height="2630" as="geometry"/>
+                </mxCell>
+                <mxCell id="61" value="" style="shape=actor;whiteSpace=wrap;html=1;fontSize=20;fontColor=#000000;fillColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="390" y="770" width="50" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="62" value="&lt;font style=&quot;font-size: 16px&quot;&gt;Developer&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="335" y="830" width="160" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="69" value="&lt;font style=&quot;font-size: 20px&quot; color=&quot;#000000&quot;&gt;Jumphost VM&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#91C0E3;" vertex="1" parent="1">
+                    <mxGeometry x="610" y="730" width="142.8" height="140" as="geometry"/>
+                </mxCell>
+                <mxCell id="81" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://download.logo.wine/logo/GitLab/GitLab-Logo.wine.png;" vertex="1" parent="1">
+                    <mxGeometry x="627.3499999999999" y="940" width="102.65" height="68.5" as="geometry"/>
+                </mxCell>
+                <mxCell id="83" value="&lt;span style=&quot;font-size: 20px&quot;&gt;Developer Usage Workflow&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="690" y="615" width="360" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="84" value="" style="shape=flexArrow;endArrow=classic;html=1;fontSize=20;fontColor=#000000;fillColor=#F07A7A;" edge="1" parent="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="460" y="800" as="sourcePoint"/>
+                        <mxPoint x="590" y="800" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="85" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=data:image/png,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;" vertex="1" parent="1">
+                    <mxGeometry x="501.38" y="727" width="40.18" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="86" value="&lt;font style=&quot;font-size: 16px&quot;&gt;vRA&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="486.94" y="762" width="69.06" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="87" value="&lt;div&gt;&lt;span style=&quot;font-size: 20px&quot;&gt;1. User creates a jumphost VM from vRA&lt;/span&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="870" y="742" width="310" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="88" value="" style="shape=actor;whiteSpace=wrap;html=1;fontSize=20;fontColor=#000000;fillColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="380" y="1132" width="50" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="89" value="&lt;font style=&quot;font-size: 16px&quot;&gt;Developer&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="326.94" y="1190" width="160" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="90" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#91C0E3;" vertex="1" parent="1">
+                    <mxGeometry x="610" y="1102" width="210" height="158" as="geometry"/>
+                </mxCell>
+                <mxCell id="93" value="Download binaries to Jumphost&amp;nbsp;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="695.94" y="1030" width="69.06" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="94" value="&lt;div&gt;&lt;span style=&quot;font-size: 20px&quot;&gt;2. Run terraform-setup.sh to perform the following:&amp;nbsp;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-size: 20px&quot;&gt;&lt;br&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-size: 20px&quot;&gt;- Pull Terraform CLI and vRA Provider from Gitlab Project&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-size: 20px&quot;&gt;- Install Terraform CLI in Jumphost VM&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-size: 20px&quot;&gt;- Configure vRA Provider within Jumphost VM&amp;nbsp;&lt;/span&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="865" y="970" width="535" height="220" as="geometry"/>
+                </mxCell>
+                <mxCell id="95" value="&lt;font style=&quot;font-size: 16px&quot;&gt;Project: Terraform&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="611.64" y="980" width="139.53" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="96" value="" style="shape=flexArrow;endArrow=classic;html=1;fontSize=20;fontColor=#000000;fillColor=#F07A7A;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="95">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="465" y="1140" as="sourcePoint"/>
+                        <mxPoint x="681" y="1090" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="98" value="&lt;font color=&quot;#000000&quot;&gt;Jumphost VM&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+                    <mxGeometry x="641.64" y="1103" width="138.36" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="99" value="" style="shape=flexArrow;endArrow=classic;html=1;fontSize=20;fontColor=#000000;fillColor=#F07A7A;" edge="1" parent="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="460" y="1166" as="sourcePoint"/>
+                        <mxPoint x="590" y="1166" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="102" value="&lt;font style=&quot;font-size: 12px&quot;&gt;Run terraform-setup.sh&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="450.94" y="1120" width="139.06" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="103" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://blogs.vmware.com/cloudprovider/files/2019/04/og-image-8b3e4f7d-blog-aspect-ratio.png;" vertex="1" parent="1">
+                    <mxGeometry x="607.58" y="1160" width="58.67" height="44" as="geometry"/>
+                </mxCell>
+                <mxCell id="104" value="&lt;font color=&quot;#000000&quot;&gt;Terraform CLI&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;" vertex="1" parent="1">
+                    <mxGeometry x="666.25" y="1135" width="133.75" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="105" value="&lt;font color=&quot;#000000&quot;&gt;Terraform vRA Provider&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;" vertex="1" parent="1">
+                    <mxGeometry x="666.25" y="1185" width="133.75" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="106" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://download.logo.wine/logo/GitLab/GitLab-Logo.wine.png;" vertex="1" parent="1">
+                    <mxGeometry x="635.4099999999999" y="1340" width="102.65" height="68.5" as="geometry"/>
+                </mxCell>
+                <mxCell id="107" value="" style="shape=actor;whiteSpace=wrap;html=1;fontSize=20;fontColor=#000000;fillColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="380" y="1587" width="50" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="108" value="&lt;font style=&quot;font-size: 16px&quot;&gt;Developer&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="326.94" y="1645" width="160" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="109" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#91C0E3;" vertex="1" parent="1">
+                    <mxGeometry x="618.06" y="1502" width="210" height="238" as="geometry"/>
+                </mxCell>
+                <mxCell id="110" value="Referenced in developer's Terraform Configuration" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="704" y="1430" width="86" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="111" value="&lt;div&gt;&lt;span style=&quot;font-size: 20px&quot;&gt;3. User will create its own Terraform Configuration file to declare what resources they want to provision from vRA&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;font-size: 20px&quot;&gt;&lt;br&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 12px&quot;&gt;*Terraform Configuration main.tf &amp;amp; variables.tf templates are provided in Terraform project.&amp;nbsp;&amp;nbsp;&lt;/font&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="870" y="1420" width="535" height="220" as="geometry"/>
+                </mxCell>
+                <mxCell id="112" value="&lt;font style=&quot;font-size: 16px&quot;&gt;Project: Terraform-cloud-b&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="583.58" y="1380" width="210.3" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="113" value="" style="shape=flexArrow;endArrow=classic;html=1;fontSize=20;fontColor=#000000;fillColor=#F07A7A;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="112">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="473.06" y="1540" as="sourcePoint"/>
+                        <mxPoint x="689.06" y="1490" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="114" value="&lt;font color=&quot;#000000&quot;&gt;Jumphost VM&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+                    <mxGeometry x="649.6999999999999" y="1503" width="138.36" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="115" value="" style="shape=flexArrow;endArrow=classic;html=1;fontSize=20;fontColor=#000000;fillColor=#F07A7A;" edge="1" parent="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="460" y="1621" as="sourcePoint"/>
+                        <mxPoint x="590" y="1621" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="116" value="&lt;font style=&quot;font-size: 12px&quot;&gt;Create Terraform Configurations&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="450.94" y="1575" width="139.06" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="117" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://blogs.vmware.com/cloudprovider/files/2019/04/og-image-8b3e4f7d-blog-aspect-ratio.png;" vertex="1" parent="1">
+                    <mxGeometry x="615.64" y="1560" width="58.67" height="44" as="geometry"/>
+                </mxCell>
+                <mxCell id="118" value="&lt;font color=&quot;#000000&quot;&gt;Terraform CLI&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;" vertex="1" parent="1">
+                    <mxGeometry x="674.31" y="1535" width="133.75" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="119" value="&lt;font color=&quot;#000000&quot;&gt;Terraform vRA Provider&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;" vertex="1" parent="1">
+                    <mxGeometry x="674.31" y="1585" width="133.75" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="120" value="&lt;font color=&quot;#000000&quot;&gt;main.tf&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;" vertex="1" parent="1">
+                    <mxGeometry x="674.31" y="1634" width="133.75" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="121" value="&lt;font color=&quot;#000000&quot;&gt;variables.tf&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;" vertex="1" parent="1">
+                    <mxGeometry x="674.31" y="1682" width="133.75" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="122" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://download.logo.wine/logo/GitLab/GitLab-Logo.wine.png;" vertex="1" parent="1">
+                    <mxGeometry x="640.4099999999999" y="1820" width="102.65" height="68.5" as="geometry"/>
+                </mxCell>
+                <mxCell id="123" value="" style="shape=actor;whiteSpace=wrap;html=1;fontSize=20;fontColor=#000000;fillColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="390" y="2067" width="50" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="124" value="&lt;font style=&quot;font-size: 16px&quot;&gt;Developer&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="336.94" y="2125" width="160" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="125" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#91C0E3;" vertex="1" parent="1">
+                    <mxGeometry x="623.06" y="1982" width="210" height="238" as="geometry"/>
+                </mxCell>
+                <mxCell id="126" value="Referenced in developer's Terraform Configuration" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="709" y="1910" width="86" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="127" value="&lt;span style=&quot;font-size: 20px&quot;&gt;4. User will initialize their Terraform Configuration using the following commands:&amp;nbsp;&lt;br&gt;- terraform init&lt;br&gt;- terraform plan&amp;nbsp;&lt;br&gt;&lt;br&gt;[Optional] When running terraform plan, they can choose to store their terraform state files onto their own Gitlab projects, to be accessible by all project team members&lt;br&gt;&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="862.5" y="1920" width="550" height="220" as="geometry"/>
+                </mxCell>
+                <mxCell id="128" value="&lt;font style=&quot;font-size: 16px&quot;&gt;Project: Terraform-cloud-b&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="588.58" y="1860" width="210.3" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="129" value="" style="shape=flexArrow;endArrow=classic;html=1;fontSize=20;fontColor=#000000;fillColor=#F07A7A;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="128">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="478.06" y="2020" as="sourcePoint"/>
+                        <mxPoint x="694.06" y="1970" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="130" value="&lt;font color=&quot;#000000&quot;&gt;Jumphost VM&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+                    <mxGeometry x="654.6999999999999" y="1983" width="138.36" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="131" value="" style="shape=flexArrow;endArrow=classic;html=1;fontSize=20;fontColor=#000000;fillColor=#F07A7A;" edge="1" parent="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="469.99999999999994" y="2101" as="sourcePoint"/>
+                        <mxPoint x="600" y="2101" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="132" value="&lt;font style=&quot;font-size: 12px&quot;&gt;terraform init&lt;br&gt;terraform plan&lt;br&gt;&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="447.88" y="2055" width="139.06" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="133" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://blogs.vmware.com/cloudprovider/files/2019/04/og-image-8b3e4f7d-blog-aspect-ratio.png;" vertex="1" parent="1">
+                    <mxGeometry x="620.64" y="2040" width="58.67" height="44" as="geometry"/>
+                </mxCell>
+                <mxCell id="134" value="&lt;font color=&quot;#000000&quot;&gt;Terraform CLI&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;" vertex="1" parent="1">
+                    <mxGeometry x="679.31" y="2015" width="133.75" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="135" value="&lt;font color=&quot;#000000&quot;&gt;Terraform vRA Provider&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;" vertex="1" parent="1">
+                    <mxGeometry x="679.31" y="2065" width="133.75" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="136" value="&lt;font color=&quot;#000000&quot;&gt;main.tf&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;" vertex="1" parent="1">
+                    <mxGeometry x="679.31" y="2114" width="133.75" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="137" value="&lt;font color=&quot;#000000&quot;&gt;variables.tf&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;" vertex="1" parent="1">
+                    <mxGeometry x="679.31" y="2162" width="133.75" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="138" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://download.logo.wine/logo/GitLab/GitLab-Logo.wine.png;" vertex="1" parent="1">
+                    <mxGeometry x="679.3099999999998" y="2261.5" width="102.65" height="68.5" as="geometry"/>
+                </mxCell>
+                <mxCell id="142" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#91C0E3;" vertex="1" parent="1">
+                    <mxGeometry x="631.18" y="2320" width="210" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="143" value="&lt;font color=&quot;#000000&quot;&gt;Used to store Terraform tfstate files&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+                    <mxGeometry x="631.18" y="2360" width="210" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="144" value="&lt;font color=&quot;#000000&quot;&gt;terraform.tfstate&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;" vertex="1" parent="1">
+                    <mxGeometry x="640.41" y="2390" width="190" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="145" value="" style="shape=flexArrow;endArrow=classic;html=1;fontSize=12;fontColor=#000000;strokeColor=#F07A7A;fillColor=#F07A7A;" edge="1" parent="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="728" y="2226" as="sourcePoint"/>
+                        <mxPoint x="728" y="2270" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="147" value="&lt;font style=&quot;font-size: 16px&quot;&gt;Project: Developers' Repo&lt;br&gt;&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="627.98" y="2320" width="210.3" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="148" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://download.logo.wine/logo/GitLab/GitLab-Logo.wine.png;" vertex="1" parent="1">
+                    <mxGeometry x="632.9099999999999" y="2520" width="102.65" height="68.5" as="geometry"/>
+                </mxCell>
+                <mxCell id="149" value="" style="shape=actor;whiteSpace=wrap;html=1;fontSize=20;fontColor=#000000;fillColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="378.58000000000004" y="2766" width="50" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="150" value="&lt;font style=&quot;font-size: 16px&quot;&gt;Developer&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="325.52000000000004" y="2824" width="160" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="151" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#91C0E3;" vertex="1" parent="1">
+                    <mxGeometry x="615.56" y="2682" width="210" height="238" as="geometry"/>
+                </mxCell>
+                <mxCell id="152" value="Referenced in developer's Terraform Configuration" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="701.5" y="2610" width="86" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="153" value="&lt;span style=&quot;font-size: 20px&quot;&gt;5. Users runs terraform apply on their Jumphost VM, which wi&lt;br&gt;&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="865" y="2950" width="550" height="220" as="geometry"/>
+                </mxCell>
+                <mxCell id="154" value="&lt;font style=&quot;font-size: 16px&quot;&gt;Project: Terraform-cloud-b&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="581.08" y="2560" width="210.3" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="155" value="" style="shape=flexArrow;endArrow=classic;html=1;fontSize=20;fontColor=#000000;fillColor=#F07A7A;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="154">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="470.55999999999995" y="2720" as="sourcePoint"/>
+                        <mxPoint x="686.56" y="2670" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="156" value="&lt;font color=&quot;#000000&quot;&gt;Jumphost VM&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+                    <mxGeometry x="647.1999999999999" y="2683" width="138.36" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="157" value="" style="shape=flexArrow;endArrow=classic;html=1;fontSize=20;fontColor=#000000;fillColor=#F07A7A;" edge="1" parent="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="458.57999999999976" y="2800" as="sourcePoint"/>
+                        <mxPoint x="588.5799999999999" y="2800" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="158" value="&lt;font style=&quot;font-size: 12px&quot;&gt;terraform apply&lt;br&gt;&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="444.96000000000004" y="2764" width="139.06" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="159" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://blogs.vmware.com/cloudprovider/files/2019/04/og-image-8b3e4f7d-blog-aspect-ratio.png;" vertex="1" parent="1">
+                    <mxGeometry x="613.14" y="2740" width="58.67" height="44" as="geometry"/>
+                </mxCell>
+                <mxCell id="160" value="&lt;font color=&quot;#000000&quot;&gt;Terraform CLI&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;" vertex="1" parent="1">
+                    <mxGeometry x="671.81" y="2715" width="133.75" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="161" value="&lt;font color=&quot;#000000&quot;&gt;Terraform vRA Provider&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;" vertex="1" parent="1">
+                    <mxGeometry x="671.81" y="2765" width="133.75" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="162" value="&lt;font color=&quot;#000000&quot;&gt;main.tf&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;" vertex="1" parent="1">
+                    <mxGeometry x="671.81" y="2814" width="133.75" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="163" value="&lt;font color=&quot;#000000&quot;&gt;variables.tf&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#FFFFFF;" vertex="1" parent="1">
+                    <mxGeometry x="671.81" y="2862" width="133.75" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="172" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#91C0E3;" vertex="1" parent="1">
+                    <mxGeometry x="1020" y="2680" width="210" height="238" as="geometry"/>
+                </mxCell>
+                <mxCell id="173" value="&lt;font style=&quot;font-size: 16px&quot;&gt;vRA&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="1090.47" y="2642" width="69.06" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="174" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#91C0E3;" vertex="1" parent="1">
+                    <mxGeometry x="1443.06" y="4568" width="210" height="238" as="geometry"/>
+                </mxCell>
+                <mxCell id="177" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=data:image/png,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;" vertex="1" parent="1">
+                    <mxGeometry x="1104.9099999999999" y="2602" width="40.18" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="179" value="&lt;font style=&quot;font-size: 16px&quot;&gt;Developer's vRA Project&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="1020" y="2685" width="210" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="182" value="" style="shape=flexArrow;endArrow=classic;html=1;fontSize=20;fontColor=#000000;fillColor=#F07A7A;" edge="1" parent="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="840" y="2799" as="sourcePoint"/>
+                        <mxPoint x="1010" y="2799" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="185" value="&lt;font style=&quot;font-size: 12px&quot;&gt;Terraform calls vRA to create deployments based on users' requested resources&lt;br&gt;&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="841.1800000000001" y="2730" width="139.06" height="40" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
