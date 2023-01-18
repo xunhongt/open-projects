@@ -36,7 +36,11 @@ You can add new Terraform Versions into VRA (to test your resource configuration
 
 The Terraform zip file will be downloaded from the URL and installed into the Pod that is spun up during the deployment. 
 
+### **Building Terraform Runtime Container Image** 
 
+For environments with no internet access, you will need to build a custom container image with the relevant Terraform Providers. 
+
+Please follow the guide attached **[here](https://docs.vmware.com/en/vRealize-Automation/8.8/Using-and-Managing-Cloud-Assembly/GUID-FBA52A2A-F34F-4D1B-8247-DA1364C8DB16.html)**.
 
 ---
 ## **References**
