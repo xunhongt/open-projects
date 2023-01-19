@@ -91,6 +91,27 @@ Docker Build:
     docker push <CLOUD_B_CONTAINER_REGISTRY>/project/<IMAGE_NAME>:<IMAGE_TAG>
 
 ---
+## **Limitations**
+
+You can refer to the VMWare Doc **[here](https://docs.vmware.com/en/vRealize-Automation/8.8/Using-and-Managing-Cloud-Assembly/GUID-FE4AC633-E1BF-4E52-82DC-D38E90A7006B.html)** for the limitations involving using Terraform Integrations in VRA. 
+
+### **Terraform configurations**
+1. When validating a design with Terraform configurations, the TEST button checks Cloud Assembly syntax but not the native Terraform code syntax.
+2. In addition, the TEST button doesn't validate commit IDs associated with Terraform configurations.
+3. For a cloud template that includes Terraform configurations, cloning the template to a different project requires the following workaround.
+     - In the new project, under the Integrations tab, copy the repositoryId for your integration.
+     - Open the clone template. In the code editor, replace the repositoryId with the one you copied.
+     - In the version control repository, don't include a Terraform state file with configuration files. If terraform.tfstate is present, errors occur during deployment.
+
+For point #3, this implies that: 
+- Every VRA Project would need to configure a Gitlab integration to the same Repository --> to access the Terraform Configuration files 
+- **Terraform-integrated Cloud Templates cannot be shared across different projects.** For another VRA Project to use the same Teraform-integrated cloud template, you'll need to do the following: 
+  1. Add a Gitlab Integration for the Project to connect to the same Gitlab Project (with Terraform Configurations)
+  2. Clone the Same Cloud Template, and replace the repository ID with the specified Project's Repository ID
+
+
+
+---
 ## **References**
 - https://blog.ukotic.net/2020/12/15/configuring-terraform-integration-in-vra-8/
 - https://hub.docker.com/r/hashicorp/terraform
