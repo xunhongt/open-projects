@@ -115,3 +115,4 @@ For point #3, this implies that:
 ## **References**
 - https://blog.ukotic.net/2020/12/15/configuring-terraform-integration-in-vra-8/
 - https://hub.docker.com/r/hashicorp/terraform
+- https://docs.vmware.com/en/vRealize-Automation/8.8/Using-and-Managing-Cloud-Assembly/GUID-FBA52A2A-F34F-4D1B-8247-DA1364C8DB16.html
