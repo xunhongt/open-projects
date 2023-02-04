@@ -90,6 +90,19 @@ Docker Build:
 
     docker push <CLOUD_B_CONTAINER_REGISTRY>/project/<IMAGE_NAME>:<IMAGE_TAG>
 
+## **Use Terraform Configurations in your Cloud Templates**
+
+### **Create a Cloud Template**
+- When users request for a Cloud Template (with Terraform Configurations), the Kubernetes Cluster will create a Pod (with the Terraform Runtime Container Image) which wil run the Terraform Plan & Apply job
+- Seems like Terraform State is stored in the VRA Deployment 
+- VRA pulls the Terraform related configurations from Gitlab 
+
+### **Infrastructure Provision Process**
+- When users request for a Cloud Template (with Terraform Configurations), the Kubernetes Cluster will create a Pod (with the Terraform Runtime Container Image) which wil run the Terraform Plan & Apply job
+- Seems like Terraform State is stored in the VRA Deployment 
+- VRA pulls the Terraform related configurations from Gitlab 
+
+
 ---
 ## **Limitations**
 
@@ -109,9 +122,26 @@ For point #3, this implies that:
   1. Add a Gitlab Integration for the Project to connect to the same Gitlab Project (with Terraform Configurations)
   2. Clone the Same Cloud Template, and replace the repository ID with the specified Project's Repository ID
 
+[2023-01-25] WORKAROUND:
+- Set Repository ID as an input variable in the Cloud template
+- Set Repository ID as a custom property in Each VRA Project
 
+4. There are 2 different States managed by VRA: 
+- Terraform State (*.tfstate) --> Where Terraform checks the Infrastructure State. Will be stored within vRA
+- VRA Deployment State
+  
+When there is a configuration drift (i.e. Infrastructure State is different from Terraform State), it is not directly reflected in VRA Deployment.
+  - It is shown in the Attributes tab in the Terraform Object (within the vRA Deployment)
+
+When unauthorized changes are done on the infrastructure, users need to manually refresh the Terraform state on the vRA Deployment. The Terraform state will then be refreshed in the Terraform Object within the vRA Deployment
+  - The variables inputted to the vRA Deployment **will NOT be updated**
+
+When you update the variables within the vRA Deployment, it will not take into account of the Terraform State stored within vRA
+
+5. If there are Infrastructure Configuration Drifts, Project admins & users **will not be alerted**. 
 
 ---
 ## **References**
 - https://blog.ukotic.net/2020/12/15/configuring-terraform-integration-in-vra-8/
 - https://hub.docker.com/r/hashicorp/terraform
+- https://docs.vmware.com/en/vRealize-Automation/8.8/Using-and-Managing-Cloud-Assembly/GUID-FBA52A2A-F34F-4D1B-8247-DA1364C8DB16.html
