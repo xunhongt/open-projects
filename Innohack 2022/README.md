@@ -179,37 +179,37 @@ Terraform's configuration language is declarative by design, where developers ca
 
 The proposed developer process flow will be as follows: 
 
-![DEVELOPER_WORKFLOW_STEP_1](images/5.1.png)
-
 1. Developers spinning up a Jumphost Server (JH) in Cloud A/B
 
-![DEVELOPER_WORKFLOW_STEP_2](images/5.2.png)
+![DEVELOPER_WORKFLOW_STEP_1](images/5.1.png)
 
 2. Run terraform-setup.sh to perform the following: 
 - Pull Terraform CLI and vRA Provider from Gitlab Project
 - Install Terraform CLI in Jumphost VM
 - Configure vRA Provider within Jumphost VM 
 
-
-![DEVELOPER_WORKFLOW_STEP_3](images/5.3.png)
+![DEVELOPER_WORKFLOW_STEP_2](images/5.2.png)
 
 3. Developers will create their own Terraform Configuration file to declare what resources they want to provision from vRA
 > Terraform Configuration main.tf & variables.tf templates are provided in Terraform project.  
 
-![DEVELOPER_WORKFLOW_STEP_4](images/5.4.png)
+![DEVELOPER_WORKFLOW_STEP_3](images/5.3.png)
 
-4. User will initialize their Terraform Configuration using the following commands: 
+4. Developers will initialize their Terraform Configuration using the following commands: 
 - terraform init
 - terraform plan 
 
 > OPTIONAL: When running terraform plan, they can choose to store their terraform state files onto their own Gitlab projects, to be accessible by all project team members
 
+![DEVELOPER_WORKFLOW_STEP_4](images/5.4.png)
+
+5. Developers apply their terraform configurations through their Jumphost VM, which will initiate Terraform to perform API calls to vRA and create their intended infrastructure. 
 
 ![DEVELOPER_WORKFLOW_STEP_5](images/5.5.png)
 
-2. Git clone the Terraform Repository into JH and/or pull their custom Terraform configurations from their own repositories
-3. Initialize Terraform Working Directory & get developer's VRA refresh token --> update it in their Terraform Variables file
-4. Terraform init --> Terraform plan --> Terraform Apply
+6. Another developer from the same project can pull the Terraform State that is stored on the Project's Gitlab repository, to ensure a centralized infrastructure state is maintained within the project. 
+   
+![DEVELOPER_WORKFLOW_STEP_6](images/5.6.png)
 
 ## 6. Milestones
 ---
