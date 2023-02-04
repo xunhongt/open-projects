@@ -52,6 +52,10 @@ Our scope of work will be done in Cloud B first.
 ## **2. Terraform Design**
 ---
 ### **2.1. Option 1: Configuring Terraform Integration in VRA**
+
+
+![OPTION_1](images/2.1_option1.png)
+
     VRA + Terraform --> Cloud A/B Resources
 
 Option #1 involves configuring Terraform Integration with VRA, allowing Cloud Admins and developers to declare custom Terraform configurations in Cloud Templates. Since Cloud Templates are declarative by default (e.g. Resources will be deleted when the deployment is deleted), we can leverage option #1 to declare resources that are not idempotent in Cloud A/B (e.g. Firewall Rules)
@@ -75,6 +79,9 @@ The general developer process flow will be very similar to what is present in Cl
 
 
 ### **2.2. Option 2: Using External Terraform to interface with VRA**
+
+![OPTION_2](images/2.2_option2.png)
+
     Terraform [External] --> Cloud A/B Resources
 
 Option #2 involves using an external Terraform Runtime to interface with VRA to create resources. 
@@ -111,6 +118,9 @@ The general developer process flow will be as follows:
 - https://blogs.vmware.com/management/2020/01/getting-started-with-vra-terraform-provider.html
 
 ### **2.3. Option 3: Hybrid Approach**
+
+![OPTION_3](images/2.3_option3.png)
+
     Terraform [External] --> VRA + Terraform --> Cloud A/B Resources
 
 Option #3 is a hybrid approach of Option #1 and #2. It combines the pros and cons of both options, but essentially this provides the most comprehensive approach to enable CI/CD of Infrastructure Code for Cloud A/B Resources, given our timeline. 
