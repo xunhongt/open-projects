@@ -127,24 +127,7 @@ Option #3 is a hybrid approach of Option #1 and #2. It combines the pros and con
 - NSX-T related Cloud Templates backed by Terraform Configurations
 - VM related Cloud Templates declared via external Terraform runtime
 
-
-### **2.4. Option 4 (UNEXPLORED): Gitlab to Interface with VRA**
-    Gitlab --> VRA --> Cloud A/B Resources
-
-Option #4 involves developers interfacing with Gitlab to manage their Terraform configurations. Once developers push their configurations onto Gitlab, it triggers a CI/CD pipeline to create a Gitlab Runner (with Terraform Runtime) that provisions the necessary resources. Gitlab will store the Terraform state for Cloud A/B Resources. 
-
-#### **Pros** 
-- Developers do not need to create a jumphost server in SDC manually. Terraform State management is outsourced to Gitlab. 
-- CI/CD pipeline for Terraform can be integrated with developers' existing application CI/CD pipeines 
-
-#### **Cons**
-- Further exploration is required for this approach. Possibly can push it to Phase 2 of project.
-
-#### **References**
-- https://docs.gitlab.com/ee/user/project/integrations/webhooks.html
-- https://docs.gitlab.com/ee/user/infrastructure/iac/
-
-> Currently, I'm leaning towards Option #3, but open to discussion. 
+> This is the Ideal Approach that we aim to explore for this Innohack Project.
 
 ## **3. VRA Design**
 ---
@@ -231,4 +214,22 @@ The proposed developer process flow will be as follows:
 - [ALL] Judging Panel Dry-Run
 - [ALL] Judging Panel
 
+### **Stretch Goals**
+
+Explore the Provisioning of Resources through Push Requests of Terraform Configurations in Gitlab 
+
+    Gitlab --> VRA --> Cloud A/B Resources
+
+This option involves developers interfacing with Gitlab to manage their Terraform configurations. Once developers push their configurations onto Gitlab, it triggers a CI/CD pipeline to create a Gitlab Runner (with Terraform Runtime) that provisions the necessary resources. Gitlab will store the Terraform state for Cloud A/B Resources. 
+
+#### **Pros** 
+- Developers do not need to create a jumphost server in SDC manually. Terraform State management is outsourced to Gitlab. 
+- CI/CD pipeline for Terraform can be integrated with developers' existing application CI/CD pipeines 
+
+#### **Cons**
+- Further exploration is required for this approach. Possibly can push it to Phase 2 of project.
+
+#### **References**
+- https://docs.gitlab.com/ee/user/project/integrations/webhooks.html
+- https://docs.gitlab.com/ee/user/infrastructure/iac/
 
