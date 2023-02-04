@@ -179,7 +179,7 @@ Terraform's configuration language is declarative by design, where developers ca
 
 The proposed developer process flow will be as follows: 
 
-1. Developers spinning up a Jumphost Server (JH) in Cloud A/B
+1. Developers will provision a Jumphost VM in Cloud A/B
 
 ![DEVELOPER_WORKFLOW_STEP_1](images/5.1.png)
 
