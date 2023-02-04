@@ -166,18 +166,47 @@ Terraform's configuration language is declarative by design, where developers ca
 - https://www.hashicorp.com/tao-of-hashicorp
 - https://blogs.vmware.com/management/2020/01/infrastructure-as-code-and-vrealize-automation.html
 
-## 4. Enabling CI/CD of Infrastructure Code
+## 4. Enabling CI/CD of Infrastructure-related Artifacts
 ---
 
 ### **4.1. GitLab Design**
-To be filled in on a later date.
+
+![GITLAB_DESIGN](images/4_gitlabDesign.png)
 
 
-## 5. Process Flow (For Developers)
+## 5. Developer Process FLow
 ---
 
 The proposed developer process flow will be as follows: 
+
+![DEVELOPER_WORKFLOW_STEP_1](images/5.1.png)
+
 1. Developers spinning up a Jumphost Server (JH) in Cloud A/B
+
+![DEVELOPER_WORKFLOW_STEP_2](images/5.2.png)
+
+2. Run terraform-setup.sh to perform the following: 
+- Pull Terraform CLI and vRA Provider from Gitlab Project
+- Install Terraform CLI in Jumphost VM
+- Configure vRA Provider within Jumphost VM 
+
+
+![DEVELOPER_WORKFLOW_STEP_3](images/5.3.png)
+
+3. Developers will create their own Terraform Configuration file to declare what resources they want to provision from vRA
+> Terraform Configuration main.tf & variables.tf templates are provided in Terraform project.  
+
+![DEVELOPER_WORKFLOW_STEP_4](images/5.4.png)
+
+4. User will initialize their Terraform Configuration using the following commands: 
+- terraform init
+- terraform plan 
+
+> OPTIONAL: When running terraform plan, they can choose to store their terraform state files onto their own Gitlab projects, to be accessible by all project team members
+
+
+![DEVELOPER_WORKFLOW_STEP_5](images/5.5.png)
+
 2. Git clone the Terraform Repository into JH and/or pull their custom Terraform configurations from their own repositories
 3. Initialize Terraform Working Directory & get developer's VRA refresh token --> update it in their Terraform Variables file
 4. Terraform init --> Terraform plan --> Terraform Apply
