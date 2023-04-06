@@ -87,6 +87,8 @@ The additional dependencies to be managed by our Section include:
 ---
 ### **Exploration**
 
+I can change the deployment name LOL
+
 ### **Observations**
 
 ### **Feasibility**

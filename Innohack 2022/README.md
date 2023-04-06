@@ -106,6 +106,7 @@ The general developer process flow will be as follows:
 #### **Pros**
 - Terraform binaries and configuration templates are stored in Gitlab, allowing version control of Cloud A/B infrastructure
 - Developers are able to integrate Cloud A/B infrastructure codes into their CI/CD pipeline, streamlining their application development process 
+- Integrates pretty well with our existing Cloud Services (workflows triggered after deployment creation)
 
 #### **Cons**
 - Some of our catalog items are not IaC Compatible (e.g. Firewall as a Service). Will need to refactor the catalog items to achieve idempotency 
@@ -126,8 +127,6 @@ The general developer process flow will be as follows:
 Option #3 is a hybrid approach of Option #1 and #2. It combines the pros and cons of both options, but essentially this provides the most comprehensive approach to enable CI/CD of Infrastructure Code for Cloud A/B Resources, given our timeline. 
 - NSX-T related Cloud Templates backed by Terraform Configurations
 - VM related Cloud Templates declared via external Terraform runtime
-
-> This is the Ideal Approach that we aim to explore for this Innohack Project.
 
 ## **3. VRA Design**
 ---
