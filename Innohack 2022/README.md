@@ -174,8 +174,18 @@ Terraform's configuration language is declarative by design, where developers ca
 ![GITLAB_DESIGN](images/4_gitlabDesign.png)
 
 
-## 5. Developer Process FLow
+## 5. User Requirements
 ---
+
+### **5.1. Happy Flow**
+
+The developers should be able to declare the following infrastructure resources via Terraform:
+1. Virtual Machines 
+2. Firewall Rules
+3. Object Storage
+
+
+### **5.2. Developer Process Flow**
 
 The proposed developer process flow will be as follows: 
 
@@ -218,30 +228,6 @@ The proposed developer process flow will be as follows:
 - [BARE MINIMUM] Complete Option #2 by March 2023
 - [MEETING EXPECTATIONS] Complete Option #3 by March 2023
 - [EXCEEDING EXPECTATIONS] Complete Option #4 by March 2023
-
-### **Dec 2022**
-- [ALL] 
-  - Familiarize with the following in Cloud B: 
-    - Gitlab Setup
-    - Terraform Integration with VRA
-    - Currently used VRA Workflows and Cloud Templates
-- [Bob] 
-  - Refactor VRA Catalog Items to have clear desired state
-
-### **Jan 2022 - Feb 2022**
-- [PERSON A + B] 
-  - Configure Terraform Integration with VRA
-  - Explore the use of Terraform Configurations in Cloud Templates
-  - Create NSX Security Groups + Firewall Rules using Terraform Configurations declared in Cloud Templates
-- [PERSON C + D] 
-  - Create Gitlab Repo for Terraform-related binaries
-  - Use external Terraform to create VRA Deployments in Cloud B
-- [Bob]
-  - Prepare for Demo (Developers' Process Flow) to showcase in Judging Panel
-
-### **Mar 2022**
-- [ALL] Judging Panel Dry-Run
-- [ALL] Judging Panel
 
 ### **Stretch Goals**
 
