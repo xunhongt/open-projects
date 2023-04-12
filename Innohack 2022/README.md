@@ -206,7 +206,7 @@ Option #2 involves using an external Terraform CLI to interface with vRA to crea
    - terraform-setup.sh
    - terraform-gitlab-init.sh
    - generate-access-token.sh
-3. Run terraform-setup.sh to Install Terraform CLI and the necessary providers on the Jumphost Server
+3. Run *terraform-setup.sh* to Install Terraform CLI and the necessary providers on the Jumphost Server
 4. Developers configure their respective terraform configurations (referenced from our Terraform Config Samples in Terraform Gitlab Project)
 5. Initialize Terraform Working Directory & get developer's VRA refresh token --> update it in their Terraform Variables file
 6. Terraform init --> Terraform plan --> Terraform Apply
