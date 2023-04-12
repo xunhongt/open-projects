@@ -5,50 +5,93 @@
 ### **1.1. Background**
 Currently, developers are only able to provision their resources through our Cloud A/B landing page (GUI). 
 
-When users request for resources (e.g. VMs, Firewalls) from the Service Catalog in VRA, they are created in the form of Deployments (a Deployment is a container that holds your provisioned resources in vRA). 
-With that, developers can track their deployed resources, and manage these deployed resources using actions. 
+When developers request for resources (e.g. VMs, Firewalls) from the Service Catalog in VRA, they are created in the form of Deployments.
+> A Deployment is a container that holds your provisioned resources in vRA. 
 
-However, this implies that developers have to manually request for their own resources through our Cloud A/B landing page, and this creates multiple deployments in the process. Developers will also have to manage their own Day-2 actions for each of their deployments.
+From the Deployments page, they can manage their deployed resources by performing Day 2 actions (e.g. Add Disk to VM, shutdown, startup etc.).
+ 
+However, there is currently **no automated way to provision cloud resources in Cloud A/B**. As such, the current process flow for developers to request for their cloud resources are as follows:
 
-    E.g. if a Developer wants to create a Cluster of VMs on Cloud A/B, and they want to test in Cloud B first:
+    **A. Provisioning a VM**
+      1. Developers select what to provision via Cloud A/B's Landing Page, or vRA service broker
+      2. They fill in the relevant details in the Catalog Item form (e.g. Server Hostname, VM Size, VM Count)
+      3. Submit the Catalog Item Request 
 
-    He/she will request for the following resources from Cloud A/B Landing Page: 
-      1. 2x Windows 2019 VMs 
-        - Will require 2 VMs to form my Application Cluster
-      2. Security Group (SG) - Create
-        - To create a SG in NSX to host my VMs
-      3. Add Members to SG
-        - To add my newly-created VMs into the SG
-      4. FW - Create
-        - To allow incoming connectivity between external VMs to my SG
+    **B. Create a Security Group**
+      4. Repeat Step A1-A2
+      5. Submit the Catalog Item Request 
+
+    **C. Add VMs to newly-created Security Group**
+      6. Repeat Step A1-A2
+      7. Submit the Catalog Item Request
+      8. Wait for Project Approver to approve the request
+
+    **D. Create a Firewall Rule to allow incoming traffic to my Security Group**
+      9. Repeat Step A1-A2
+      10. Submit the Catalog Item Request
+      11. Wait for Project Approver to approve the request 
+
+    **E. (Optional) Modify a Firewall Rule**
+      12. Repeat Step A1-A2
+      13. Submit the Catalog Item Request
+      14. Wait for Project Approver to approve the request 
     
-    This creates a total of 4 deployments within their VRA Project in Cloud B only. 
-    They will have to replicate this process in Cloud A as well. 
+A lot of time is taken for a developer to navigate through the GUI to create their required cloud resources. 
 
-Some of these catalog items are also on a fire-and-forget basis (e.g. Firewall-as-a-Service). This means even if the VRA deployment is deleted, the Firewall Rule will still persist in NSX-T. This also implies that 2 separate deployments have to be created just to create and delete a firewall rule. 
+Moreover, some of these catalog items are also on a fire-and-forget basis (e.g. Firewall-as-a-Service). This means even if the vRA deployment is deleted, the Firewall Rule will still persist in NSX-T. This also implies that developers have to go through 3 different Catalog Items in vRA (3 different deployments created) just to create/modify/delete a firewall rule. 
 
-[To be confirmed] ~~Moreover, there is currently no known method to perform source control of resources in Cloud A/B. This implies that infrastructure in Cloud B could potentially be inconsistent with Cloud B.~~
-
-> **Ultimately, there is a need to reduce that resource management overhead for developers, providing them with a more streamlined developer experience in Cloud A/B.**
+> In summary, there are 2 potential areas of improvement with our current Cloud Resource provisioning process:
+>   1. A lot of time taken to navigate through GUI to create resources
+>   2. Resources are not fully mapped to vRA deployments (specifically Firewall-as-a-Service)
+> 
+> **Ultimately, there is a need to provide developers with a more streamlined developer experience in Cloud A/B.**
 
 ### **1.2. Objectives**
 
-We aim to enable developers with a platform to utilize Infrastructure-as-Code (IaC) to provision our Cloud A/B Resources.
+We aim to enable developers to utilize Infrastructure-as-Code (IaC) to provision our Cloud A/B Resources. With IaC, developers can simply declare what resources they want to create via a IaC Tool (specifically Terraform), and it will trigger the relevant API calls to our Backend infrastructure to create the necessary cloud resources. 
+
+Through IaC, the process flow for developers to provision cloud resources can be **significantly shortened**:
+
+    **A. Provisioning a VM + Creating a Firewall Rule**
+      1. Developers create their Terraform Configuration with the respective resources
+         - 1x VM
+         - 1x Firewall Rule
+           - Source: External IP Address
+           - Dest: 1x VM
+      2. Terraform Apply
+      3. Wait for resources to be created
+
+    **B. (Optional) Modify the Firewall Destination to include a new VM**
+      4. Developers modify their Terraform Configuration with the respective resources
+         - 2x VM
+         - 1x Firewall Rule
+           - Source: External IP Address
+           - Dest: 2x VM
+      5. Terraform Apply
+      6. Wait for resources to be created
+
+
+**Some of the benefits from using IaC include:**
+1. Reduce the time required to provision cloud resources in Cloud A/B
+2. Lower Risk of Human Error
+3. Version Control of IaC 
+
 
 ### **1.3. Design Considerations**
 1. Developers will still follow the VRA Project Construct
      - Can only request for resources within their project resource limits
-     - Follows the RBAC in VRA --> unable to bypass any approval policies 
-2. Resources provisioned through Terraform will still be integrated with our existing services in Cloud A/B 
-3. Developers should be able to manage their IaC using source control tools e.g. Gitlab 
+     - Follows the Role-based Access Control (RBAC) in VRA --> unable to bypass any approval policies 
+2. Attempt to use tools and processes that developers are familiar with --> Reduce the amount of Cognitive Load for Developers 
+3. Provisioned resources from Terraform will still be able to integrate with our existing cloud services
+4. Developers should be able to manage their IaC using source control tools e.g. Gitlab 
 
 ### **1.4. Project Scope**
 1. To propose an operational design to enable IaC for Cloud A/B Resources
-2. To refactor our VRA Resources to be idempotent and immutable --> allowing these services to be IaC-Compatible
+2. To refactor our VRA Resources to be idempotent --> allowing these services to be IaC-Compatible
 3. To enable CI/CD of IaC templates 
 4. To perform a walkthrough of declaring Cloud A/B resources from a developers' perspective
 
-Our scope of work will be done in Cloud B first. 
+Our scope of work will be performed in Cloud B first. 
 
 ## **2. Terraform Design**
 ---
@@ -148,7 +191,9 @@ An immutable infrastructure implies that the **infrastructure cannot be modified
 
 > One key requirement to enable immutable infrastructure for Cloud A/B Resources is that **application data must be externalized from the managed infrastructure**. This ensures that when new resources are created using Terraform (e.g. Web Servers) and any additional configuration management tools (e.g. Ansible), it will not require an in-place upgrade/modification, or any data migration. The new resources can simply point to the external database, and redirect application traffic from the old instance to the new one. 
 
-In the context of Cloud A/B, we can enforce the following to ensure immutability of resources:
+In the context of Cloud A/B, it is difficult to ensure immutability of cloud resources, since vRA promotes the use of Day 2 actions to manage provisioned resources. 
+
+However, we can enforce the following to ensure immutability of vRA Deployments:
 
     1. Restrict any Day 2 actions on the VRA Deployments --> The only Day 2 action allowed for developers is to delete their own deployments through Terraform. 
 
