@@ -208,8 +208,9 @@ Option #2 involves using an external Terraform CLI to interface with vRA to crea
    - generate-access-token.sh
 3. Run *terraform-setup.sh* to Install Terraform CLI and the necessary providers on the Jumphost Server
 4. Developers configure their respective terraform configurations (referenced from our Terraform Config Samples in Terraform Gitlab Project)
-5. Initialize Terraform Working Directory & get developer's VRA refresh token --> update it in their Terraform Variables file
-6. Terraform init --> Terraform plan --> Terraform Apply
+5. Run *generate-access-token.sh* to generate terraform.tfvars file (with vRA Access Token & Project Name)
+6. (Optional) Run *terraform-gitlab-init.sh* to Initialize Terraform Working Directory in Gitlab 
+7. Terraform init --> Terraform plan --> Terraform Apply
 
 
 #### **Pros**
@@ -294,8 +295,6 @@ Terraform's configuration language is declarative by design, where developers ca
 The developers should be able to declare the following infrastructure resources via Terraform:
 1. Virtual Machines 
 2. Firewall Rules
-3. Object Storage
-
 
 ### **5.2. Developer Usage Flow**
 
