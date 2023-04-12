@@ -5,7 +5,8 @@
 ### **1.1. Background**
 Currently, developers are only able to provision their resources through our Cloud A/B landing page (GUI). 
 
-When users request for resources (e.g. VMs, Firewalls) from the Service Catalog in VRA, they are created in the form of Deployments. With that, developers can track their deployed resources, and manage these deployed resources using actions. 
+When users request for resources (e.g. VMs, Firewalls) from the Service Catalog in VRA, they are created in the form of Deployments (a Deployment is a container that holds your provisioned resources in vRA). 
+With that, developers can track their deployed resources, and manage these deployed resources using actions. 
 
 However, this implies that developers have to manually request for their own resources through our Cloud A/B landing page, and this creates multiple deployments in the process. Developers will also have to manage their own Day-2 actions for each of their deployments.
 
