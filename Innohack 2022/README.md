@@ -62,47 +62,72 @@ Through IaC, the process flow for developers to provision cloud resources can be
       3. Wait for resources to be created
 
     **B. (Optional) Modify the Firewall Destination to include a new VM**
-      4. Developers modify their Terraform Configuration with the respective resources
+      1. Developers modify their Terraform Configuration with the respective resources
          - 2x VM
          - 1x Firewall Rule
            - Source: External IP Address
            - Dest: 2x VM
-      5. Terraform Apply
-      6. Wait for resources to be created
+      2. Terraform Apply
+      3. Wait for resources to be created
 
 
 **Some of the benefits from using IaC include:**
 1. Reduce the time required to provision cloud resources in Cloud A/B
 2. Lower Risk of Human Error
-3. Version Control of IaC 
+3. Version Control of Infrastructure Code
 
+This is also a good opportunity to explore how to implement IaC in our Cloud Environment, since this is a requirement for the upcoming VicCloud Project. 
 
 ### **1.3. Design Considerations**
 1. Developers will still follow the VRA Project Construct
      - Can only request for resources within their project resource limits
      - Follows the Role-based Access Control (RBAC) in VRA --> unable to bypass any approval policies 
-2. Attempt to use tools and processes that developers are familiar with --> Reduce the amount of Cognitive Load for Developers 
+2. Attempt to use tools and processes that developers are familiar with --> Reduce the amount of Cognitive Load for Developers and Cloud Admins
 3. Provisioned resources from Terraform will still be able to integrate with our existing cloud services
 4. Developers should be able to manage their IaC using source control tools e.g. Gitlab 
 
 ### **1.4. Project Scope**
-1. To propose an operational design to enable IaC for Cloud A/B Resources
-2. To refactor our VRA Resources to be idempotent --> allowing these services to be IaC-Compatible
-3. To enable CI/CD of IaC templates 
-4. To perform a walkthrough of declaring Cloud A/B resources from a developers' perspective
+The following points will be covered in this Project's scope:
+
+1. To propose an PoC design to enable IaC for the following Cloud A/B Resources:
+   - VMs 
+   - Firewall Rules
+2. To refactor our Cloud Services to be idempotent --> allowing these services to be IaC-Compatible
+3. To perform a walkthrough of declaring Cloud A/B resources from a developers' perspective
 
 Our scope of work will be performed in Cloud B first. 
 
-## **2. Terraform Design**
+### **1.5. Out of Scope**
+The following points will **NOT** be covered in this Project's scope:
+
+1. To enable CI/CD of IaC templates
+2. Other Cloud Services (e.g. Object Storage, Tanzu K8s Clusters) 
+
+## **2. Approaches to enable IaC**
 ---
+We intend to use vRA Deployments as our main Resource Block for enabling IaC in Cloud A/B. This is due to the following: 
+- We have existing post-provisioning workflows that are triggered upon the creation of vRA Deployments. Some of which include: 
+  - Onboarding our VMs onto CyberArk
+  - Creating an Ansible Host in AWX
+  - Creating a DNS Entry in our DNS Server
+
+By using vRA Deployments as our main resource block, we do not have to re-invent the wheel by coding our own Cloud-init scripts & other post-provisioning workflows. 
+> Note: To simpliy the declaration of infrastructure, 1 vRA Deployment will be tied to 1 resource (VM, FW Rule). These deployments will then be managed via developers' Terraform Configurations. 
+
+Through this Innohack project, we have experimented on the following approaches to enable IaC in Cloud A/B: 
+1. Configuring Terraform Integration in VRA
+2. Using External Terraform to interface with VRA
+3. Hybrid Approach (Option 1 + 2)
+
 ### **2.1. Option 1: Configuring Terraform Integration in VRA**
-
-
-![OPTION_1](images/2.1_option1.png)
 
     VRA + Terraform --> Cloud A/B Resources
 
+![OPTION_1](images/2.1_option1.png)
+
 Option #1 involves configuring Terraform Integration with VRA, allowing Cloud Admins and developers to declare custom Terraform configurations in Cloud Templates. Since Cloud Templates are declarative by default (e.g. Resources will be deleted when the deployment is deleted), we can leverage option #1 to declare resources that are not idempotent in Cloud A/B (e.g. Firewall Rules)
+
+**Developer Process Flow**
 
 The general developer process flow will be very similar to what is present in Cloud A/B. The Terraform configurations are abstracted from the developers (only declared in Cloud Templates).
 
@@ -113,7 +138,9 @@ The general developer process flow will be very similar to what is present in Cl
 
 #### **Cons**
 - Requires an External Kubernetes Cluster to be integrated with VRA to host Terraform Runtime (likely managed by us)
-- Developers still have to manage their deployments through VRA Service Catalog, doesn't provide an option to use CI/CD for their resources
+- Developers still have to manage their deployments through VRA Service Catalog, doesn't provide an option to provision their resources automatically
+
+You can refer to the exploration log [here](exploration-log/README.md#option-1-configuring-terraform-integration-in-vra).
 
 #### **References**
 - https://blogs.vmware.com/management/2020/09/terraform-service-in-vra.html
@@ -124,39 +151,79 @@ The general developer process flow will be very similar to what is present in Cl
 
 ### **2.2. Option 2: Using External Terraform to interface with VRA**
 
-![OPTION_2](images/2.2_option2.png)
-
     Terraform [External] --> Cloud A/B Resources
 
-Option #2 involves using an external Terraform Runtime to interface with VRA to create resources. 
+![OPTION_2](images/2.2_option2.png)
 
-We will create a public repository (E.g. Terraform) within our self-hosted Gitlab to store the following:
-    - Terraform CLI 
-    - Terraform Providers (VMWare vRealize Automation Provider)
-    - Sample Terraform Configuration Templates
-    - Shellscript to initialize Terraform Working Directory + extract developers' VRA Refresh Token
+Option #2 involves using an external Terraform CLI to interface with vRA to create resources. 
+> Pre-requisite: Developers would need to spin up their own Jumphost server in order to use Terraform
 
-Developers are free to fork the repository and configure their own custom Terraform Configuration templates to state how much resources they need. 
+2 public Gitlab repositories will be created for the following purposes:
 
-A separate Content Source (for Cloud Templates and VRO Workflows) will be tailor-made just for Terraform compatibility.
-> Note: To simpliy the declaration of infrastructure, 1 Deployment will be tied to 1 resource (VM, SG, FW Rule). These deployments will then be managed via developers' Terraform Configurations. 
+| Repository Name   | Description |
+| :------           | :-----------|
+| Terraform         | Contains artifacts required for developers to use IaC to provision resources |
+| terraform-cloud-b | Contains Terraform Modules that map to each Catalog Item |
 
-The general developer process flow will be as follows: 
-1. Developers spinning up a Jumphost Server (JH) in Cloud A/B
-2. Git clone the Terraform Repository into JH and/or pull their custom Terraform configurations from their own repositories
-3. Initialize Terraform Working Directory & get developer's VRA refresh token --> update it in their Terraform Variables file
-4. Terraform init --> Terraform plan --> Terraform Apply
+**Gitlab Project (Terraform) Contents:**
+```
+├── terraform-cli
+│   ├── <TERRAFORM_CLI_BINARIES>
+├── terraform-providers
+│   ├── <TERRAFORM_PROVIDERS_BINARIES>
+├── samples
+│   └── sdc-terraform
+│       ├── main.tf
+│       ├── variables.tf
+│       ├── outputs.tf
+│       └── terraform.tfvars
+├── generate-access-token.sh    //  Generates vRA Refresh Token to be used in Developers' Terraform Configurations
+├── terraform-setup.sh          //  Setup Terraform CLI and Providers to be used in Developers' Jumphost Server
+└── terraform-gitlab-init.sh    //  Initializes Terraform working directory, with Gitlab Project as backend
+```
+
+**Gitlab Group (terraform-cloud-b) Contents:**
+```
+├── terraform-cloud-b
+│   └── vra
+│       ├── networking
+|       |   ├── firewall-ext-env-to-A
+|       |   ├── firewall-A-to-A
+|       |   └── firewall-ext-env-to-A-tanzu
+│       └── virtual-machines
+|           ├── ubuntu-mate       // Terraform Module (Expanded)
+|           │   ├── main.tf       //  Terraform Configuration that contains resources created from this Module
+|           │   ├── variables.tf  //  pre-defined variables that are used in this Terraform Module
+|           │   ├── outputs.tf    //  Terraform Output variables after resource is created
+|           ├── ubuntu
+|           ├── rhel
+|           └── windows
+```
+
+**Developer Process Flow**
+1. Developers spin up a Jumphost Server (JH) in Cloud A/B
+2. Download the Startup scripts from the Terraform Gitlab Project
+   - terraform-setup.sh
+   - terraform-gitlab-init.sh
+   - generate-access-token.sh
+3. Run terraform-setup.sh to Install Terraform CLI and the necessary providers on the Jumphost Server
+4. Developers configure their respective terraform configurations (referenced from our Terraform Config Samples in Terraform Gitlab Project)
+5. Initialize Terraform Working Directory & get developer's VRA refresh token --> update it in their Terraform Variables file
+6. Terraform init --> Terraform plan --> Terraform Apply
+
 
 #### **Pros**
-- Terraform binaries and configuration templates are stored in Gitlab, allowing version control of Cloud A/B infrastructure
+- Terraform configuration templates can be stored in Gitlab, allowing version control of Cloud A/B infrastructure
 - Developers are able to integrate Cloud A/B infrastructure codes into their CI/CD pipeline, streamlining their application development process 
 - Integrates pretty well with our existing Cloud Services (workflows triggered after deployment creation)
 
 #### **Cons**
 - Some of our catalog items are not IaC Compatible (e.g. Firewall as a Service). Will need to refactor the catalog items to achieve idempotency 
 - only vra_deployment resource in VRA Terraform Provider is relevant, and is very limited in functionality (Day 2 custom actions like update deployment / add disk cannot be done through Terraform) 
-- [Need to review] Day 2 Action policies to be set for Terraform Content Source to ensure resources are immutable 
+- Additional effort is required to manage Terraform Modules for each catalog item, and to keep them in sync with our Cloud Services released on Cloud A/B
 - Developers still need to spin up a jumphost server manaually to initialize their Terraform runtime (it's current practices now)
+
+You can refer to the exploration log [here](exploration-log/README.md#option-2-using-external-terraform-to-interface-with-vra).
 
 #### **References**
 - https://registry.terraform.io/providers/vmware/vra/latest/docs
@@ -168,7 +235,7 @@ The general developer process flow will be as follows:
 
     Terraform [External] --> VRA + Terraform --> Cloud A/B Resources
 
-Option #3 is a hybrid approach of Option #1 and #2. It combines the pros and cons of both options, but essentially this provides the most comprehensive approach to enable CI/CD of Infrastructure Code for Cloud A/B Resources, given our timeline. 
+Option #3 is a hybrid approach of Option #1 and #2. 
 - NSX-T related Cloud Templates backed by Terraform Configurations
 - VM related Cloud Templates declared via external Terraform runtime
 
@@ -184,7 +251,7 @@ In the context of Cloud A/B, we can enforce the following to ensure a clear Desi
     1. VRA Cloud Templates are declarative by design. By deleting Cloud Template deployments, the resources will be removed as well. 
     2. For VRO Workflow Catalog Items, ensure that a subscription (to delete resource) is tagged to the Catalog Item when said deployment is deleted. 
 
-Currently, some of our catalog items do not follow this rule (e.g. Firewall-as-a-Service). These workflows need to be re-factored to fit this design consideration. 
+Currently, some of our catalog items do not follow this rule (e.g. Firewall-as-a-Service). These workflows need to be refactored to fit this design consideration. 
 
 ### **3.2. Immutability**
 An immutable infrastructure implies that the **infrastructure cannot be modified once deployed**. When changes are necessary, you need to deploy afresh, swing traffic to the new instance and decommission old infrastructure. 
@@ -214,7 +281,7 @@ Terraform's configuration language is declarative by design, where developers ca
 ## 4. Enabling CI/CD of Infrastructure-related Artifacts
 ---
 
-### **4.1. GitLab Design**
+### **4.1. GitLab Project Design**
 
 ![GITLAB_DESIGN](images/4_gitlabDesign.png)
 
@@ -230,7 +297,7 @@ The developers should be able to declare the following infrastructure resources 
 3. Object Storage
 
 
-### **5.2. Developer Process Flow**
+### **5.2. Developer Usage Flow**
 
 The proposed developer process flow will be as follows: 
 
