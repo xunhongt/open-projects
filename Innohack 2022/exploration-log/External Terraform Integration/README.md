@@ -4,14 +4,8 @@
 ---
 ## **Pre-requisites**
 
-In order to use Terraform in VRA Cloud Templates, the following needs to be done: 
-1. Prepare a Kubernetes Cluster
-2. Configure a Terraform Runtime Integration that uses the K8s Cluster
-3. Configure and enable the Terraform Versions that you will use
-4. Enable Terraform Cloud Zone Mapping for your Project
-5. Configure a Gitlab Project Repository for Terraform Configuration Files
+The developer is required to spin up a Jumphost Server
 
-The purpose of K8s is for VRA to spin up a Pod and run a Terraform Container Image (this is where the Terraform Configurations are executed). 
 
 ---
 ## **Setup Terraform Runtime Integration**

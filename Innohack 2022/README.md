@@ -135,6 +135,7 @@ The general developer process flow will be very similar to what is present in Cl
 - Using NSX-T Terraform Provider, we can declare the following in our Cloud Templates (Hybrid TF-VRA Blueprints): 
   - NSX-T Policies (DFW + GFW)
   - NSX-T Security Groups
+- Catalogs Items in Cloud A/B becomes IaC-compatible. This implies that the Security groups and Firewalls created by vRA will be idempotent 
 
 #### **Cons**
 - Requires an External Kubernetes Cluster to be integrated with VRA to host Terraform Runtime (likely managed by us)
@@ -165,18 +166,22 @@ Option #2 involves using an external Terraform CLI to interface with vRA to crea
 | Terraform         | Contains artifacts required for developers to use IaC to provision resources |
 | terraform-cloud-b | Contains Terraform Modules that map to each Catalog Item |
 
+![GITLAB_DESIGN](images/4_gitlabDesign.png)
+
 **Gitlab Project (Terraform) Contents:**
 ```
 ├── terraform-cli
-│   ├── <TERRAFORM_CLI_BINARIES>
+│   ├── <TERRAFORM_CLI_BINARIES>       //  Allows developers to run Terraform commands on their Jumphost Servers
 ├── terraform-providers
-│   ├── <TERRAFORM_PROVIDERS_BINARIES>
+│   ├── <TERRAFORM_PROVIDERS_BINARIES> //  Terraform Plugins that allow developers to interact with Cloud Providers (Specifically vRA) APIs
 ├── samples
 │   └── sdc-terraform
-│       ├── main.tf
-│       ├── variables.tf
-│       ├── outputs.tf
-│       └── terraform.tfvars
+│       ├── main.tf             //  Sample Terraform Configuration File - developers can reference them to declare their resources
+│       ├── variables.tf        //  Sample Terraform Variables File - to declare the parameters required for their resource creation (e.g. VM Name, VM T-shirt size etc.)
+│       ├── outputs.tf          //  Sample Terraform Outputs File - Output variables generated from your Terraform resources 
+│       └── terraform.tfvars    //  Actual variables used in Terraform Runtime (e.g. vRA Refresh Token, vRA Project Name)
+|
+|
 ├── generate-access-token.sh    //  Generates vRA Refresh Token to be used in Developers' Terraform Configurations
 ├── terraform-setup.sh          //  Setup Terraform CLI and Providers to be used in Developers' Jumphost Server
 └── terraform-gitlab-init.sh    //  Initializes Terraform working directory, with Gitlab Project as backend
@@ -212,17 +217,17 @@ Option #2 involves using an external Terraform CLI to interface with vRA to crea
 6. (Optional) Run *terraform-gitlab-init.sh* to Initialize Terraform Working Directory in Gitlab 
 7. Terraform init --> Terraform plan --> Terraform Apply
 
-
 #### **Pros**
 - Terraform configuration templates can be stored in Gitlab, allowing version control of Cloud A/B infrastructure
 - Developers are able to integrate Cloud A/B infrastructure codes into their CI/CD pipeline, streamlining their application development process 
-- Integrates pretty well with our existing Cloud Services (workflows triggered after deployment creation)
+- Integrates with our existing Cloud Services and processes (workflows triggered after deployment creation)
 
 #### **Cons**
 - Some of our catalog items are not IaC Compatible (e.g. Firewall as a Service). Will need to refactor the catalog items to achieve idempotency 
-- only vra_deployment resource in VRA Terraform Provider is relevant, and is very limited in functionality (Day 2 custom actions like update deployment / add disk cannot be done through Terraform) 
+- only vra_deployment resource in VRA Terraform Provider is relevant, and is very limited in functionality (Day 2 custom actions like update deployment / add disk are not supported through Terraform) 
 - Additional effort is required to manage Terraform Modules for each catalog item, and to keep them in sync with our Cloud Services released on Cloud A/B
-- Developers still need to spin up a jumphost server manaually to initialize their Terraform runtime (it's current practices now)
+- Developers would need to learn a new language (HCL) to create their own Terraform Configurations
+- Developers still need to spin up a jumphost server manaually to initialize their Terraform runtime (it's the current practice now)
 
 You can refer to the exploration log [here](exploration-log/README.md#option-2-using-external-terraform-to-interface-with-vra).
 
@@ -232,13 +237,29 @@ You can refer to the exploration log [here](exploration-log/README.md#option-2-u
 
 ### **2.3. Option 3: Hybrid Approach**
 
-![OPTION_3](images/2.3_option3.png)
-
     Terraform [External] --> VRA + Terraform --> Cloud A/B Resources
 
-Option #3 is a hybrid approach of Option #1 and #2. 
-- NSX-T related Cloud Templates backed by Terraform Configurations
-- VM related Cloud Templates declared via external Terraform runtime
+![OPTION_3](images/2.3_option3.png)
+
+Option #3 combines the implementation of both Option #1 and #2. Using vRA's native integration with Terraform, we can use NSX-T Terraform Provider to declare networking resources (Security Groups & Firewall Rules) using Cloud Templates. This addresses one of the problem statements where Catalog items are not IaC compatible (e.g. Firewall as a Service). 
+
+Developers can then create their own Terraform configurations to declare Cloud resources to be provisioned in Cloud A/B. 
+
+#### **Pros**
+- Terraform configuration templates can be stored in Gitlab, allowing version control of Cloud A/B infrastructure
+- Developers are able to integrate Cloud A/B infrastructure codes into their CI/CD pipeline, streamlining their application development process 
+- Integrates with our existing Cloud Services and processes (workflows triggered after deployment creation)
+- Catalogs Items in Cloud A/B becomes IaC-compatible. This implies that the Security groups and Firewalls created by vRA will be idempotent 
+
+#### **Cons**
+-  Requires an External Kubernetes Cluster to be integrated with VRA to host Terraform Runtime (likely managed by us)
+- only vra_deployment resource in VRA Terraform Provider is relevant, and is very limited in functionality (Day 2 custom actions like update deployment / add disk cannot be done through Terraform) 
+- Additional effort is required to manage the following: 
+  - Terraform Modules for each catalog item, to keep them in sync with our Cloud Services released on Cloud A/B
+  - The external Kubernetes Cluster
+  - Terraform Runtime container images
+  - Terraform CLI and Provider binaries (to be configured on Gitlab and vRA)
+- Developers still need to spin up a jumphost server manaually to initialize their Terraform runtime (it's current practices now)
 
 ## **3. VRA Design**
 ---
@@ -279,24 +300,18 @@ Terraform's configuration language is declarative by design, where developers ca
 - https://www.hashicorp.com/tao-of-hashicorp
 - https://blogs.vmware.com/management/2020/01/infrastructure-as-code-and-vrealize-automation.html
 
-## 4. Enabling CI/CD of Infrastructure-related Artifacts
+
+
+## 4. User Requirements
 ---
 
-### **4.1. GitLab Project Design**
-
-![GITLAB_DESIGN](images/4_gitlabDesign.png)
-
-
-## 5. User Requirements
----
-
-### **5.1. Happy Flow**
+### **4.1. Happy Flow**
 
 The developers should be able to declare the following infrastructure resources via Terraform:
 1. Virtual Machines 
 2. Firewall Rules
 
-### **5.2. Developer Usage Flow**
+### **4.2. Developer Usage Flow**
 
 The proposed developer process flow will be as follows: 
 
